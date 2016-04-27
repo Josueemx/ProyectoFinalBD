@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -37,6 +45,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
@@ -69,10 +79,88 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\ALUMNO.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CarrerasDeDICA.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CITA.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DBHorario.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBHorario.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DBHorario.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DBHorario.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBHorario.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DiasDeEventoRecurrente.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DICA.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EVENTO.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\EVENTO_RECURRENTE.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PERSONA.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PERSONA_CEL.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PERSONA_CORREO.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PROFESOR.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\sysdiagram.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EntityDeploy Include="Entities\DBHorario.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DBHorario.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="App.Config" />
+    <None Include="Entities\DBHorario.edmx.diagram">
+      <DependentUpon>DBHorario.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Entities\DBHorario.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBHorario.edmx</DependentUpon>
+      <LastGenOutput>DBHorario.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Entities\DBHorario.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DBHorario.edmx</DependentUpon>
+      <LastGenOutput>DBHorario.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstract\" />
+    <Folder Include="Concrete\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

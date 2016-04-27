@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cd60dee834c74fccb7908366834ff802" Name="Diagram1">
+        <EntityTypeShape EntityType="HorarioModel.ALUMNO" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HorarioModel.CarrerasDeDICA" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="HorarioModel.CITA" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HorarioModel.DiasDeEventoRecurrente" Width="1.5" PointX="5.25" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HorarioModel.DICA" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="HorarioModel.EVENTO" Width="1.5" PointX="3.875" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HorarioModel.EVENTO_RECURRENTE" Width="1.5" PointX="3" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HorarioModel.PERSONA" Width="1.5" PointX="0.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HorarioModel.PERSONA_CEL" Width="1.5" PointX="1.5" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="HorarioModel.PERSONA_CORREO" Width="1.5" PointX="1.5" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HorarioModel.PROFESOR" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HorarioModel.sysdiagram" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="HorarioModel.Alumno_crea_Cita" ManuallyRouted="false" />
+        <AssociationConnector Association="HorarioModel.DICA_tiene_Carreras" ManuallyRouted="false" />
+        <AssociationConnector Association="HorarioModel.Persona_tiene_Cita_" ManuallyRouted="false" />
+        <AssociationConnector Association="HorarioModel.Profesor_atiende_Cita" ManuallyRouted="false" />
+        <AssociationConnector Association="HorarioModel.Evento_Recurrente_tiene_Dias" ManuallyRouted="false" />
+        <AssociationConnector Association="HorarioModel.Profesor_es_DICA" ManuallyRouted="false" />
+        <AssociationConnector Association="HorarioModel.Evento_de_Profesor" ManuallyRouted="false" />
+        <AssociationConnector Association="HorarioModel.Profesor_tiene_Evento_Recurrente" ManuallyRouted="false" />
+        <AssociationConnector Association="HorarioModel.Persona_con_Cel" ManuallyRouted="false" />
+        <AssociationConnector Association="HorarioModel.Persona_con_Correo" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
