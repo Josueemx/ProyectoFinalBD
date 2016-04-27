@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Horario.WebUI.Default" %>
+<%@ Import Namespace="System.Data.OleDb" %>
 
 <!DOCTYPE html>
 
@@ -9,7 +10,18 @@
 <body>
     <form id="form1" runat="server">
     <div>
-    <p>luisra</p>
+    <asp:DataGrid ID="ProfeGrid" runat="server">
+
+    </asp:DataGrid>
+    <br />
+    <p>aqui abajo deberia estar</p>
+    <br />
+    <asp:DataList  ID="ProfeGrid2" runat="server">
+        <ItemTemplate>
+            <%# Eval("Nombre")%>
+            <asp:Label id="Text1" runat="server" Text='<%# DataBinder.Eval(Container.DataItem,"Nombre") %>'/> <!-- aqui -->
+        </ItemTemplate>
+    </asp:DataList>
     </div>
     </form>
 </body>

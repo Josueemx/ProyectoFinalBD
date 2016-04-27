@@ -53,3 +53,5 @@ C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\b
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\obj\Debug\Horario.WebUI.csprojResolveAssemblyReference.cache
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\obj\Debug\Horario.WebUI.dll
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\obj\Debug\Horario.WebUI.pdb
+C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\bin\EntityFramework.dll
+C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\bin\EntityFramework.xml

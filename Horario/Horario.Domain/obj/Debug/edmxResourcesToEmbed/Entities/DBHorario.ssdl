@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="HorarioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ALUMNO">
+    <Key>
+      <PropertyRef Name="Matricula" />
+    </Key>
+    <Property Name="Matricula" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CarrerasDeDICA">
+    <Key>
+      <PropertyRef Name="Nomina" />
+      <PropertyRef Name="Carrera" />
+    </Key>
+    <Property Name="Nomina" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Carrera" Type="char" MaxLength="5" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CITA">
+    <Key>
+      <PropertyRef Name="Folio" />
+      <PropertyRef Name="IDVisitante" />
+      <PropertyRef Name="NominaP" />
+    </Key>
+    <Property Name="Folio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDVisitante" Type="int" Nullable="false" />
+    <Property Name="NominaP" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Asunto" Type="nchar" MaxLength="250" Nullable="false" />
+    <Property Name="HoraInicio" Type="time" Precision="7" Nullable="false" />
+    <Property Name="HoraFin" Type="time" Precision="7" Nullable="false" />
+    <Property Name="Fecha" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DiasDeEventoRecurrente">
+    <Key>
+      <PropertyRef Name="IDEvento" />
+      <PropertyRef Name="Dia" />
+    </Key>
+    <Property Name="IDEvento" Type="int" Nullable="false" />
+    <Property Name="Dia" Type="char" MaxLength="3" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DICA">
+    <Key>
+      <PropertyRef Name="Nomina" />
+    </Key>
+    <Property Name="Nomina" Type="char" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EVENTO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nombre" Type="nchar" MaxLength="250" Nullable="false" />
+    <Property Name="FechaInicio" Type="datetime" Nullable="false" />
+    <Property Name="FechaFin" Type="datetime" Nullable="false" />
+    <Property Name="NominaP" Type="char" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EVENTO_RECURRENTE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NominaP" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Nombre" Type="nchar" MaxLength="250" Nullable="false" />
+    <Property Name="HoraInicio" Type="time" Precision="7" Nullable="false" />
+    <Property Name="HoraFin" Type="time" Precision="7" Nullable="false" />
+    <Property Name="FechaInicio" Type="date" Nullable="false" />
+    <Property Name="FechaFin" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PERSONA">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="PrimerNombre" Type="nchar" MaxLength="250" Nullable="false" />
+    <Property Name="Apellido" Type="nchar" MaxLength="250" Nullable="false" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PERSONA_CEL">
+    <Key>
+      <PropertyRef Name="IDPersona" />
+    </Key>
+    <Property Name="IDPersona" Type="int" Nullable="false" />
+    <Property Name="Numero" Type="char" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PERSONA_CORREO">
+    <Key>
+      <PropertyRef Name="IDPersona" />
+    </Key>
+    <Property Name="IDPersona" Type="int" Nullable="false" />
+    <Property Name="Correo" Type="nchar" MaxLength="250" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PROFESOR">
+    <Key>
+      <PropertyRef Name="Nomina" />
+    </Key>
+    <Property Name="Nomina" Type="char" MaxLength="10" Nullable="false" />
+    <Property Name="Area" Type="nchar" MaxLength="250" />
+    <Property Name="Celular" Type="char" MaxLength="10" />
+    <Property Name="Extension" Type="char" MaxLength="4" />
+    <Property Name="Nombre" Type="nchar" MaxLength="250" Nullable="false" />
+    <Property Name="Apellido" Type="nchar" MaxLength="250" Nullable="false" />
+    <Property Name="Foto" Type="image" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="Alumno crea Cita">
+    <End Role="ALUMNO" Type="Self.ALUMNO" Multiplicity="1" />
+    <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ALUMNO">
+        <PropertyRef Name="Matricula" />
+      </Principal>
+      <Dependent Role="CITA">
+        <PropertyRef Name="IDVisitante" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DICA tiene Carreras">
+    <End Role="DICA" Type="Self.DICA" Multiplicity="1" />
+    <End Role="CarrerasDeDICA" Type="Self.CarrerasDeDICA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DICA">
+        <PropertyRef Name="Nomina" />
+      </Principal>
+      <Dependent Role="CarrerasDeDICA">
+        <PropertyRef Name="Nomina" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Evento de Profesor">
+    <End Role="PROFESOR" Type="Self.PROFESOR" Multiplicity="1" />
+    <End Role="EVENTO" Type="Self.EVENTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROFESOR">
+        <PropertyRef Name="Nomina" />
+      </Principal>
+      <Dependent Role="EVENTO">
+        <PropertyRef Name="NominaP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Evento Recurrente tiene Dias">
+    <End Role="EVENTO_RECURRENTE" Type="Self.EVENTO_RECURRENTE" Multiplicity="1" />
+    <End Role="DiasDeEventoRecurrente" Type="Self.DiasDeEventoRecurrente" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EVENTO_RECURRENTE">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DiasDeEventoRecurrente">
+        <PropertyRef Name="IDEvento" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Persona con Cel">
+    <End Role="PERSONA_CEL" Type="Self.PERSONA_CEL" Multiplicity="1" />
+    <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="PERSONA_CEL">
+        <PropertyRef Name="IDPersona" />
+      </Principal>
+      <Dependent Role="PERSONA">
+        <PropertyRef Name="ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Persona con Correo">
+    <End Role="PERSONA_CORREO" Type="Self.PERSONA_CORREO" Multiplicity="1" />
+    <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="PERSONA_CORREO">
+        <PropertyRef Name="IDPersona" />
+      </Principal>
+      <Dependent Role="PERSONA">
+        <PropertyRef Name="ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Persona tiene Cita ">
+    <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
+    <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERSONA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CITA">
+        <PropertyRef Name="IDVisitante" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Profesor atiende Cita">
+    <End Role="PROFESOR" Type="Self.PROFESOR" Multiplicity="1" />
+    <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROFESOR">
+        <PropertyRef Name="Nomina" />
+      </Principal>
+      <Dependent Role="CITA">
+        <PropertyRef Name="NominaP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Profesor es DICA">
+    <End Role="PROFESOR" Type="Self.PROFESOR" Multiplicity="1" />
+    <End Role="DICA" Type="Self.DICA" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="PROFESOR">
+        <PropertyRef Name="Nomina" />
+      </Principal>
+      <Dependent Role="DICA">
+        <PropertyRef Name="Nomina" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Profesor tiene Evento Recurrente">
+    <End Role="PROFESOR" Type="Self.PROFESOR" Multiplicity="1" />
+    <End Role="EVENTO_RECURRENTE" Type="Self.EVENTO_RECURRENTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROFESOR">
+        <PropertyRef Name="Nomina" />
+      </Principal>
+      <Dependent Role="EVENTO_RECURRENTE">
+        <PropertyRef Name="NominaP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="HorarioModelStoreContainer">
+    <EntitySet Name="ALUMNO" EntityType="Self.ALUMNO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CarrerasDeDICA" EntityType="Self.CarrerasDeDICA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CITA" EntityType="Self.CITA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DiasDeEventoRecurrente" EntityType="Self.DiasDeEventoRecurrente" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DICA" EntityType="Self.DICA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EVENTO" EntityType="Self.EVENTO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EVENTO_RECURRENTE" EntityType="Self.EVENTO_RECURRENTE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PERSONA" EntityType="Self.PERSONA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PERSONA_CEL" EntityType="Self.PERSONA_CEL" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PERSONA_CORREO" EntityType="Self.PERSONA_CORREO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PROFESOR" EntityType="Self.PROFESOR" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="Alumno crea Cita" Association="Self.Alumno crea Cita">
+      <End Role="ALUMNO" EntitySet="ALUMNO" />
+      <End Role="CITA" EntitySet="CITA" />
+    </AssociationSet>
+    <AssociationSet Name="DICA tiene Carreras" Association="Self.DICA tiene Carreras">
+      <End Role="DICA" EntitySet="DICA" />
+      <End Role="CarrerasDeDICA" EntitySet="CarrerasDeDICA" />
+    </AssociationSet>
+    <AssociationSet Name="Evento de Profesor" Association="Self.Evento de Profesor">
+      <End Role="PROFESOR" EntitySet="PROFESOR" />
+      <End Role="EVENTO" EntitySet="EVENTO" />
+    </AssociationSet>
+    <AssociationSet Name="Evento Recurrente tiene Dias" Association="Self.Evento Recurrente tiene Dias">
+      <End Role="EVENTO_RECURRENTE" EntitySet="EVENTO_RECURRENTE" />
+      <End Role="DiasDeEventoRecurrente" EntitySet="DiasDeEventoRecurrente" />
+    </AssociationSet>
+    <AssociationSet Name="Persona con Cel" Association="Self.Persona con Cel">
+      <End Role="PERSONA_CEL" EntitySet="PERSONA_CEL" />
+      <End Role="PERSONA" EntitySet="PERSONA" />
+    </AssociationSet>
+    <AssociationSet Name="Persona con Correo" Association="Self.Persona con Correo">
+      <End Role="PERSONA_CORREO" EntitySet="PERSONA_CORREO" />
+      <End Role="PERSONA" EntitySet="PERSONA" />
+    </AssociationSet>
+    <AssociationSet Name="Persona tiene Cita " Association="Self.Persona tiene Cita ">
+      <End Role="PERSONA" EntitySet="PERSONA" />
+      <End Role="CITA" EntitySet="CITA" />
+    </AssociationSet>
+    <AssociationSet Name="Profesor atiende Cita" Association="Self.Profesor atiende Cita">
+      <End Role="PROFESOR" EntitySet="PROFESOR" />
+      <End Role="CITA" EntitySet="CITA" />
+    </AssociationSet>
+    <AssociationSet Name="Profesor es DICA" Association="Self.Profesor es DICA">
+      <End Role="PROFESOR" EntitySet="PROFESOR" />
+      <End Role="DICA" EntitySet="DICA" />
+    </AssociationSet>
+    <AssociationSet Name="Profesor tiene Evento Recurrente" Association="Self.Profesor tiene Evento Recurrente">
+      <End Role="PROFESOR" EntitySet="PROFESOR" />
+      <End Role="EVENTO_RECURRENTE" EntitySet="EVENTO_RECURRENTE" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
