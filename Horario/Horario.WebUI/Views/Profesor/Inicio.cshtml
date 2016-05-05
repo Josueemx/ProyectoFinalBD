@@ -1,0 +1,20 @@
+﻿@model Horario.Domain.Concrete.EFProfesorRepository
+
+@{
+    ViewBag.Title = "Inicio";
+}
+
+@foreach (var prof in Model.Inicio)
+{
+    <div>
+        <h3>@prof.Nombre @prof.Apellido</h3>
+        
+        <img src="@prof.Foto" />
+        @{
+            if (@prof.Ocupado == "No")
+            {
+                <button onclick="Unafuncion('@prof.Nomina')"> Timbrar</button>
+            }
+         }
+    </div>
+}

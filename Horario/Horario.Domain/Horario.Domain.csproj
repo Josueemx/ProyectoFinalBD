@@ -79,6 +79,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IProfesorRepository.cs" />
+    <Compile Include="Concrete\EFProfesorRepository.cs" />
     <Compile Include="Entities\ALUMNO.cs">
       <DependentUpon>DBHorario.tt</DependentUpon>
     </Compile>
@@ -127,6 +129,15 @@
     <Compile Include="Entities\PROFESOR.cs">
       <DependentUpon>DBHorario.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ProfesoresPagInicio_Result.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\sp_helpdiagrams_Result.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\sysdiagram.cs">
       <DependentUpon>DBHorario.tt</DependentUpon>
     </Compile>
@@ -158,10 +169,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Abstract\" />
-    <Folder Include="Concrete\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

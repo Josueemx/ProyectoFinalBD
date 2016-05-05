@@ -55,3 +55,5 @@ C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\o
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\obj\Debug\Horario.WebUI.pdb
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\bin\EntityFramework.dll
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\bin\EntityFramework.xml
+C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\bin\EntityFramework.SqlServer.dll
+C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.WebUI\bin\EntityFramework.SqlServer.xml

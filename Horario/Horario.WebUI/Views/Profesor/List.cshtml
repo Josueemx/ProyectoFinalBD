@@ -1,0 +1,18 @@
+﻿@model  Horario.Domain.Concrete.EFProfesorRepository
+
+@{
+    ViewBag.Title = "Profesores";
+}
+
+@foreach (var prof in Model.Profesores)
+{
+    <div>
+        <h3>@prof.Nomina</h3>
+        @prof.Nombre
+        @prof.Apellido
+        <br />
+        @prof.Area
+    </div>
+}
+
+
