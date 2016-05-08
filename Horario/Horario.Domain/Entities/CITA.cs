@@ -15,14 +15,13 @@ namespace Horario.Domain.Entities
     public partial class CITA
     {
         public int Folio { get; set; }
-        public int IDVisitante { get; set; }
+        public int IDPersona { get; set; }
         public string NominaP { get; set; }
         public string Asunto { get; set; }
         public System.TimeSpan HoraInicio { get; set; }
         public System.TimeSpan HoraFin { get; set; }
         public System.DateTime Fecha { get; set; }
     
-        public virtual ALUMNO ALUMNO { get; set; }
         public virtual PERSONA PERSONA { get; set; }
         public virtual PROFESOR PROFESOR { get; set; }
     }

@@ -16,7 +16,5 @@ namespace Horario.Domain.Entities
     {
         public int IDPersona { get; set; }
         public string Numero { get; set; }
-    
-        public virtual PERSONA PERSONA { get; set; }
     }
 }

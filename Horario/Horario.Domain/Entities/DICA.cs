@@ -17,13 +17,13 @@ namespace Horario.Domain.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DICA()
         {
-            this.CarrerasDeDICAs = new HashSet<CarrerasDeDICA>();
+            this.CarrerasDeDICA = new HashSet<CarrerasDeDICA>();
         }
     
         public string Nomina { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CarrerasDeDICA> CarrerasDeDICAs { get; set; }
+        public virtual ICollection<CarrerasDeDICA> CarrerasDeDICA { get; set; }
         public virtual PROFESOR PROFESOR { get; set; }
     }
 }

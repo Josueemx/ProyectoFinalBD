@@ -17,7 +17,7 @@ namespace Horario.Domain.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public EVENTO_RECURRENTE()
         {
-            this.DiasDeEventoRecurrentes = new HashSet<DiasDeEventoRecurrente>();
+            this.DiasDeEventoRecurrente = new HashSet<DiasDeEventoRecurrente>();
         }
     
         public int ID { get; set; }
@@ -29,7 +29,7 @@ namespace Horario.Domain.Entities
         public System.DateTime FechaFin { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DiasDeEventoRecurrente> DiasDeEventoRecurrentes { get; set; }
+        public virtual ICollection<DiasDeEventoRecurrente> DiasDeEventoRecurrente { get; set; }
         public virtual PROFESOR PROFESOR { get; set; }
     }
 }

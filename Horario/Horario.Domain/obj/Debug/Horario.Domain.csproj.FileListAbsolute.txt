@@ -1,5 +1,8 @@
+C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\Horario.Domain.dll.config
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\Horario.Domain.dll
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\Horario.Domain.pdb
+C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\EntityFramework.dll
+C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\Microsoft.Web.Infrastructure.dll
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\System.Web.Helpers.dll
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\System.Web.Mvc.dll
@@ -7,6 +10,8 @@ C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\System.Web.WebPages.Deployment.dll
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\System.Web.WebPages.dll
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\System.Web.WebPages.Razor.dll
+C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\EntityFramework.xml
+C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\System.Web.Helpers.xml
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\System.Web.Mvc.xml
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\System.Web.Razor.xml
@@ -16,8 +21,3 @@ C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\obj\Debug\Horario.Domain.csprojResolveAssemblyReference.cache
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\obj\Debug\Horario.Domain.dll
 C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\obj\Debug\Horario.Domain.pdb
-C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\Horario.Domain.dll.config
-C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\EntityFramework.dll
-C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\EntityFramework.SqlServer.dll
-C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\EntityFramework.xml
-C:\Users\Josué Morales\Documents\GitHub\ProyectoFinalBD\Horario\Horario.Domain\bin\Debug\EntityFramework.SqlServer.xml

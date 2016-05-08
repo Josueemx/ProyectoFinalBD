@@ -17,8 +17,8 @@ namespace Horario.Domain.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PROFESOR()
         {
-            this.CITAs = new HashSet<CITA>();
-            this.EVENTOes = new HashSet<EVENTO>();
+            this.CITA = new HashSet<CITA>();
+            this.EVENTO = new HashSet<EVENTO>();
             this.EVENTO_RECURRENTE = new HashSet<EVENTO_RECURRENTE>();
         }
     
@@ -31,10 +31,10 @@ namespace Horario.Domain.Entities
         public byte[] Foto { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CITA> CITAs { get; set; }
+        public virtual ICollection<CITA> CITA { get; set; }
         public virtual DICA DICA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EVENTO> EVENTOes { get; set; }
+        public virtual ICollection<EVENTO> EVENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EVENTO_RECURRENTE> EVENTO_RECURRENTE { get; set; }
     }

@@ -4,12 +4,16 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="HorarioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ProyectoFinalBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ProyectoFinalBD.dbo.ALUMNO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ALUMNO">
           <Key>
+            <PropertyRef Name="IDPersona" />
             <PropertyRef Name="Matricula" />
           </Key>
-          <Property Name="Matricula" Type="int" Nullable="false" />
+          <Property Name="IDPersona" Type="int" Nullable="false" />
+          <Property Name="Matricula" Type="nchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="CarrerasDeDICA">
           <Key>
@@ -22,11 +26,9 @@
         <EntityType Name="CITA">
           <Key>
             <PropertyRef Name="Folio" />
-            <PropertyRef Name="IDVisitante" />
-            <PropertyRef Name="NominaP" />
           </Key>
           <Property Name="Folio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDVisitante" Type="int" Nullable="false" />
+          <Property Name="IDPersona" Type="int" Nullable="false" />
           <Property Name="NominaP" Type="char" MaxLength="10" Nullable="false" />
           <Property Name="Asunto" Type="nchar" MaxLength="250" Nullable="false" />
           <Property Name="HoraInicio" Type="time" Precision="7" Nullable="false" />
@@ -77,16 +79,22 @@
           <Property Name="Apellido" Type="nchar" MaxLength="250" Nullable="false" />
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CEL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PERSONA_CEL">
           <Key>
             <PropertyRef Name="IDPersona" />
+            <PropertyRef Name="Numero" />
           </Key>
           <Property Name="IDPersona" Type="int" Nullable="false" />
           <Property Name="Numero" Type="char" MaxLength="10" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PERSONA_CORREO">
           <Key>
             <PropertyRef Name="IDPersona" />
+            <PropertyRef Name="Correo" />
           </Key>
           <Property Name="IDPersona" Type="int" Nullable="false" />
           <Property Name="Correo" Type="nchar" MaxLength="250" Nullable="false" />
@@ -113,18 +121,6 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <Association Name="Alumno crea Cita">
-          <End Role="ALUMNO" Type="Self.ALUMNO" Multiplicity="1" />
-          <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALUMNO">
-              <PropertyRef Name="Matricula" />
-            </Principal>
-            <Dependent Role="CITA">
-              <PropertyRef Name="IDVisitante" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="DICA tiene Carreras">
           <End Role="DICA" Type="Self.DICA" Multiplicity="1" />
           <End Role="CarrerasDeDICA" Type="Self.CarrerasDeDICA" Multiplicity="*" />
@@ -161,31 +157,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Persona con Cel">
-          <End Role="PERSONA_CEL" Type="Self.PERSONA_CEL" Multiplicity="1" />
-          <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="PERSONA_CEL">
-              <PropertyRef Name="IDPersona" />
-            </Principal>
-            <Dependent Role="PERSONA">
-              <PropertyRef Name="ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Persona con Correo">
-          <End Role="PERSONA_CORREO" Type="Self.PERSONA_CORREO" Multiplicity="1" />
-          <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="PERSONA_CORREO">
-              <PropertyRef Name="IDPersona" />
-            </Principal>
-            <Dependent Role="PERSONA">
-              <PropertyRef Name="ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Persona tiene Cita ">
+        <Association Name="Persona crea Cita">
           <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
           <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -193,7 +165,19 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="CITA">
-              <PropertyRef Name="IDVisitante" />
+              <PropertyRef Name="IDPersona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Persona es Alumno">
+          <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
+          <End Role="ALUMNO" Type="Self.ALUMNO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSONA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ALUMNO">
+              <PropertyRef Name="IDPersona" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -235,6 +219,10 @@
         </Association>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="ProfesoresPagInicio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="regresarHorario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nomina" Type="char" Mode="In" />
+          <Parameter Name="Dia" Type="datetime" Mode="In" />
+        </Function>
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
@@ -265,8 +253,7 @@
           <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <EntityContainer Name="HorarioModelStoreContainer">
-          <EntitySet Name="ALUMNO" EntityType="Self.ALUMNO" Schema="dbo" store:Type="Tables" />
+        <EntityContainer Name="ProyectoFinalBDModelStoreContainer">
           <EntitySet Name="CarrerasDeDICA" EntityType="Self.CarrerasDeDICA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CITA" EntityType="Self.CITA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiasDeEventoRecurrente" EntityType="Self.DiasDeEventoRecurrente" Schema="dbo" store:Type="Tables" />
@@ -274,14 +261,26 @@
           <EntitySet Name="EVENTO" EntityType="Self.EVENTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EVENTO_RECURRENTE" EntityType="Self.EVENTO_RECURRENTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERSONA" EntityType="Self.PERSONA" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PERSONA_CEL" EntityType="Self.PERSONA_CEL" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PERSONA_CORREO" EntityType="Self.PERSONA_CORREO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PROFESOR" EntityType="Self.PROFESOR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="Alumno crea Cita" Association="Self.Alumno crea Cita">
-            <End Role="ALUMNO" EntitySet="ALUMNO" />
-            <End Role="CITA" EntitySet="CITA" />
-          </AssociationSet>
+          <EntitySet Name="ALUMNO" EntityType="Self.ALUMNO" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ALUMNO].[IDPersona] AS [IDPersona], 
+    [ALUMNO].[Matricula] AS [Matricula]
+    FROM [dbo].[ALUMNO] AS [ALUMNO]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PERSONA_CEL" EntityType="Self.PERSONA_CEL" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PERSONA_CEL].[IDPersona] AS [IDPersona], 
+    [PERSONA_CEL].[Numero] AS [Numero]
+    FROM [dbo].[PERSONA_CEL] AS [PERSONA_CEL]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PERSONA_CORREO" EntityType="Self.PERSONA_CORREO" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PERSONA_CORREO].[IDPersona] AS [IDPersona], 
+    [PERSONA_CORREO].[Correo] AS [Correo]
+    FROM [dbo].[PERSONA_CORREO] AS [PERSONA_CORREO]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="DICA tiene Carreras" Association="Self.DICA tiene Carreras">
             <End Role="DICA" EntitySet="DICA" />
             <End Role="CarrerasDeDICA" EntitySet="CarrerasDeDICA" />
@@ -294,17 +293,13 @@
             <End Role="EVENTO_RECURRENTE" EntitySet="EVENTO_RECURRENTE" />
             <End Role="DiasDeEventoRecurrente" EntitySet="DiasDeEventoRecurrente" />
           </AssociationSet>
-          <AssociationSet Name="Persona con Cel" Association="Self.Persona con Cel">
-            <End Role="PERSONA_CEL" EntitySet="PERSONA_CEL" />
-            <End Role="PERSONA" EntitySet="PERSONA" />
-          </AssociationSet>
-          <AssociationSet Name="Persona con Correo" Association="Self.Persona con Correo">
-            <End Role="PERSONA_CORREO" EntitySet="PERSONA_CORREO" />
-            <End Role="PERSONA" EntitySet="PERSONA" />
-          </AssociationSet>
-          <AssociationSet Name="Persona tiene Cita " Association="Self.Persona tiene Cita ">
+          <AssociationSet Name="Persona crea Cita" Association="Self.Persona crea Cita">
             <End Role="PERSONA" EntitySet="PERSONA" />
             <End Role="CITA" EntitySet="CITA" />
+          </AssociationSet>
+          <AssociationSet Name="Persona es Alumno" Association="Self.Persona es Alumno">
+            <End Role="PERSONA" EntitySet="PERSONA" />
+            <End Role="ALUMNO" EntitySet="ALUMNO" />
           </AssociationSet>
           <AssociationSet Name="Profesor atiende Cita" Association="Self.Profesor atiende Cita">
             <End Role="PROFESOR" EntitySet="PROFESOR" />
@@ -319,17 +314,11 @@
             <End Role="EVENTO_RECURRENTE" EntitySet="EVENTO_RECURRENTE" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="HorarioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="ALUMNO">
-          <Key>
-            <PropertyRef Name="Matricula" />
-          </Key>
-          <Property Name="Matricula" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CITAs" Relationship="Self.Alumno_crea_Cita" FromRole="ALUMNO" ToRole="CITA" />
-        </EntityType>
+      <Schema Namespace="ProyectoFinalBDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="CarrerasDeDICA">
           <Key>
             <PropertyRef Name="Nomina" />
@@ -342,18 +331,15 @@
         <EntityType Name="CITA">
           <Key>
             <PropertyRef Name="Folio" />
-            <PropertyRef Name="IDVisitante" />
-            <PropertyRef Name="NominaP" />
           </Key>
           <Property Name="Folio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDVisitante" Type="Int32" Nullable="false" />
+          <Property Name="IDPersona" Type="Int32" Nullable="false" />
           <Property Name="NominaP" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="Asunto" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="HoraInicio" Type="Time" Nullable="false" Precision="7" />
           <Property Name="HoraFin" Type="Time" Nullable="false" Precision="7" />
           <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="ALUMNO" Relationship="Self.Alumno_crea_Cita" FromRole="CITA" ToRole="ALUMNO" />
-          <NavigationProperty Name="PERSONA" Relationship="Self.Persona_tiene_Cita_" FromRole="CITA" ToRole="PERSONA" />
+          <NavigationProperty Name="PERSONA" Relationship="Self.Persona_crea_Cita" FromRole="CITA" ToRole="PERSONA" />
           <NavigationProperty Name="PROFESOR" Relationship="Self.Profesor_atiende_Cita" FromRole="CITA" ToRole="PROFESOR" />
         </EntityType>
         <EntityType Name="DiasDeEventoRecurrente">
@@ -370,7 +356,7 @@
             <PropertyRef Name="Nomina" />
           </Key>
           <Property Name="Nomina" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="CarrerasDeDICAs" Relationship="Self.DICA_tiene_Carreras" FromRole="DICA" ToRole="CarrerasDeDICA" />
+          <NavigationProperty Name="CarrerasDeDICA" Relationship="Self.DICA_tiene_Carreras" FromRole="DICA" ToRole="CarrerasDeDICA" />
           <NavigationProperty Name="PROFESOR" Relationship="Self.Profesor_es_DICA" FromRole="DICA" ToRole="PROFESOR" />
         </EntityType>
         <EntityType Name="EVENTO">
@@ -395,7 +381,7 @@
           <Property Name="HoraFin" Type="Time" Nullable="false" Precision="7" />
           <Property Name="FechaInicio" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="FechaFin" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="DiasDeEventoRecurrentes" Relationship="Self.Evento_Recurrente_tiene_Dias" FromRole="EVENTO_RECURRENTE" ToRole="DiasDeEventoRecurrente" />
+          <NavigationProperty Name="DiasDeEventoRecurrente" Relationship="Self.Evento_Recurrente_tiene_Dias" FromRole="EVENTO_RECURRENTE" ToRole="DiasDeEventoRecurrente" />
           <NavigationProperty Name="PROFESOR" Relationship="Self.Profesor_tiene_Evento_Recurrente" FromRole="EVENTO_RECURRENTE" ToRole="PROFESOR" />
         </EntityType>
         <EntityType Name="PERSONA">
@@ -405,25 +391,8 @@
           <Property Name="PrimerNombre" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Apellido" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="CITAs" Relationship="Self.Persona_tiene_Cita_" FromRole="PERSONA" ToRole="CITA" />
-          <NavigationProperty Name="PERSONA_CEL" Relationship="Self.Persona_con_Cel" FromRole="PERSONA" ToRole="PERSONA_CEL" />
-          <NavigationProperty Name="PERSONA_CORREO" Relationship="Self.Persona_con_Correo" FromRole="PERSONA" ToRole="PERSONA_CORREO" />
-        </EntityType>
-        <EntityType Name="PERSONA_CEL">
-          <Key>
-            <PropertyRef Name="IDPersona" />
-          </Key>
-          <Property Name="IDPersona" Type="Int32" Nullable="false" />
-          <Property Name="Numero" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="PERSONA" Relationship="Self.Persona_con_Cel" FromRole="PERSONA_CEL" ToRole="PERSONA" />
-        </EntityType>
-        <EntityType Name="PERSONA_CORREO">
-          <Key>
-            <PropertyRef Name="IDPersona" />
-          </Key>
-          <Property Name="IDPersona" Type="Int32" Nullable="false" />
-          <Property Name="Correo" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="PERSONA" Relationship="Self.Persona_con_Correo" FromRole="PERSONA_CORREO" ToRole="PERSONA" />
+          <NavigationProperty Name="CITA" Relationship="Self.Persona_crea_Cita" FromRole="PERSONA" ToRole="CITA" />
+          <NavigationProperty Name="ALUMNO" Relationship="Self.Persona_es_Alumno" FromRole="PERSONA" ToRole="ALUMNO" />
         </EntityType>
         <EntityType Name="PROFESOR">
           <Key>
@@ -436,12 +405,12 @@
           <Property Name="Nombre" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Apellido" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Foto" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="CITAs" Relationship="Self.Profesor_atiende_Cita" FromRole="PROFESOR" ToRole="CITA" />
+          <NavigationProperty Name="CITA" Relationship="Self.Profesor_atiende_Cita" FromRole="PROFESOR" ToRole="CITA" />
           <NavigationProperty Name="DICA" Relationship="Self.Profesor_es_DICA" FromRole="PROFESOR" ToRole="DICA" />
-          <NavigationProperty Name="EVENTOes" Relationship="Self.Evento_de_Profesor" FromRole="PROFESOR" ToRole="EVENTO" />
+          <NavigationProperty Name="EVENTO" Relationship="Self.Evento_de_Profesor" FromRole="PROFESOR" ToRole="EVENTO" />
           <NavigationProperty Name="EVENTO_RECURRENTE" Relationship="Self.Profesor_tiene_Evento_Recurrente" FromRole="PROFESOR" ToRole="EVENTO_RECURRENTE" />
         </EntityType>
-        <EntityType Name="sysdiagram">
+        <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
           </Key>
@@ -451,18 +420,31 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <Association Name="Alumno_crea_Cita">
-          <End Role="ALUMNO" Type="Self.ALUMNO" Multiplicity="1" />
-          <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ALUMNO">
-              <PropertyRef Name="Matricula" />
-            </Principal>
-            <Dependent Role="CITA">
-              <PropertyRef Name="IDVisitante" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <EntityType Name="ALUMNO">
+          <Key>
+            <PropertyRef Name="IDPersona" />
+            <PropertyRef Name="Matricula" />
+          </Key>
+          <Property Name="IDPersona" Type="Int32" Nullable="false" />
+          <Property Name="Matricula" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PERSONA" Relationship="Self.Persona_es_Alumno" FromRole="ALUMNO" ToRole="PERSONA" />
+        </EntityType>
+        <EntityType Name="PERSONA_CEL">
+          <Key>
+            <PropertyRef Name="IDPersona" />
+            <PropertyRef Name="Numero" />
+          </Key>
+          <Property Name="IDPersona" Type="Int32" Nullable="false" />
+          <Property Name="Numero" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PERSONA_CORREO">
+          <Key>
+            <PropertyRef Name="IDPersona" />
+            <PropertyRef Name="Correo" />
+          </Key>
+          <Property Name="IDPersona" Type="Int32" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
+        </EntityType>
         <Association Name="DICA_tiene_Carreras">
           <End Role="DICA" Type="Self.DICA" Multiplicity="1" />
           <End Role="CarrerasDeDICA" Type="Self.CarrerasDeDICA" Multiplicity="*" />
@@ -475,7 +457,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Persona_tiene_Cita_">
+        <Association Name="Persona_crea_Cita">
           <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
           <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -483,7 +465,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="CITA">
-              <PropertyRef Name="IDVisitante" />
+              <PropertyRef Name="IDPersona" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -547,84 +529,68 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Persona_con_Cel">
-          <End Role="PERSONA_CEL" Type="Self.PERSONA_CEL" Multiplicity="1" />
-          <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="0..1" />
+        <Association Name="Persona_es_Alumno">
+          <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
+          <End Role="ALUMNO" Type="Self.ALUMNO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="PERSONA_CEL">
-              <PropertyRef Name="IDPersona" />
-            </Principal>
-            <Dependent Role="PERSONA">
+            <Principal Role="PERSONA">
               <PropertyRef Name="ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Persona_con_Correo">
-          <End Role="PERSONA_CORREO" Type="Self.PERSONA_CORREO" Multiplicity="1" />
-          <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="PERSONA_CORREO">
-              <PropertyRef Name="IDPersona" />
             </Principal>
-            <Dependent Role="PERSONA">
-              <PropertyRef Name="ID" />
+            <Dependent Role="ALUMNO">
+              <PropertyRef Name="IDPersona" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="HorarioEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ALUMNOes" EntityType="Self.ALUMNO" />
-          <EntitySet Name="CarrerasDeDICAs" EntityType="Self.CarrerasDeDICA" />
-          <EntitySet Name="CITAs" EntityType="Self.CITA" />
-          <EntitySet Name="DiasDeEventoRecurrentes" EntityType="Self.DiasDeEventoRecurrente" />
-          <EntitySet Name="DICAs" EntityType="Self.DICA" />
-          <EntitySet Name="EVENTOes" EntityType="Self.EVENTO" />
+          <EntitySet Name="CarrerasDeDICA" EntityType="Self.CarrerasDeDICA" />
+          <EntitySet Name="CITA" EntityType="Self.CITA" />
+          <EntitySet Name="DiasDeEventoRecurrente" EntityType="Self.DiasDeEventoRecurrente" />
+          <EntitySet Name="DICA" EntityType="Self.DICA" />
+          <EntitySet Name="EVENTO" EntityType="Self.EVENTO" />
           <EntitySet Name="EVENTO_RECURRENTE" EntityType="Self.EVENTO_RECURRENTE" />
-          <EntitySet Name="PERSONAs" EntityType="Self.PERSONA" />
+          <EntitySet Name="PERSONA" EntityType="Self.PERSONA" />
+          <EntitySet Name="PROFESOR" EntityType="Self.PROFESOR" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="ALUMNO" EntityType="Self.ALUMNO" />
           <EntitySet Name="PERSONA_CEL" EntityType="Self.PERSONA_CEL" />
           <EntitySet Name="PERSONA_CORREO" EntityType="Self.PERSONA_CORREO" />
-          <EntitySet Name="PROFESORs" EntityType="Self.PROFESOR" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <AssociationSet Name="Alumno_crea_Cita" Association="Self.Alumno_crea_Cita">
-            <End Role="ALUMNO" EntitySet="ALUMNOes" />
-            <End Role="CITA" EntitySet="CITAs" />
-          </AssociationSet>
           <AssociationSet Name="DICA_tiene_Carreras" Association="Self.DICA_tiene_Carreras">
-            <End Role="DICA" EntitySet="DICAs" />
-            <End Role="CarrerasDeDICA" EntitySet="CarrerasDeDICAs" />
+            <End Role="DICA" EntitySet="DICA" />
+            <End Role="CarrerasDeDICA" EntitySet="CarrerasDeDICA" />
           </AssociationSet>
-          <AssociationSet Name="Persona_tiene_Cita_" Association="Self.Persona_tiene_Cita_">
-            <End Role="PERSONA" EntitySet="PERSONAs" />
-            <End Role="CITA" EntitySet="CITAs" />
+          <AssociationSet Name="Persona_crea_Cita" Association="Self.Persona_crea_Cita">
+            <End Role="PERSONA" EntitySet="PERSONA" />
+            <End Role="CITA" EntitySet="CITA" />
           </AssociationSet>
           <AssociationSet Name="Profesor_atiende_Cita" Association="Self.Profesor_atiende_Cita">
-            <End Role="PROFESOR" EntitySet="PROFESORs" />
-            <End Role="CITA" EntitySet="CITAs" />
+            <End Role="PROFESOR" EntitySet="PROFESOR" />
+            <End Role="CITA" EntitySet="CITA" />
           </AssociationSet>
           <AssociationSet Name="Evento_Recurrente_tiene_Dias" Association="Self.Evento_Recurrente_tiene_Dias">
             <End Role="EVENTO_RECURRENTE" EntitySet="EVENTO_RECURRENTE" />
-            <End Role="DiasDeEventoRecurrente" EntitySet="DiasDeEventoRecurrentes" />
+            <End Role="DiasDeEventoRecurrente" EntitySet="DiasDeEventoRecurrente" />
           </AssociationSet>
           <AssociationSet Name="Profesor_es_DICA" Association="Self.Profesor_es_DICA">
-            <End Role="PROFESOR" EntitySet="PROFESORs" />
-            <End Role="DICA" EntitySet="DICAs" />
+            <End Role="PROFESOR" EntitySet="PROFESOR" />
+            <End Role="DICA" EntitySet="DICA" />
           </AssociationSet>
           <AssociationSet Name="Evento_de_Profesor" Association="Self.Evento_de_Profesor">
-            <End Role="PROFESOR" EntitySet="PROFESORs" />
-            <End Role="EVENTO" EntitySet="EVENTOes" />
+            <End Role="PROFESOR" EntitySet="PROFESOR" />
+            <End Role="EVENTO" EntitySet="EVENTO" />
           </AssociationSet>
           <AssociationSet Name="Profesor_tiene_Evento_Recurrente" Association="Self.Profesor_tiene_Evento_Recurrente">
-            <End Role="PROFESOR" EntitySet="PROFESORs" />
+            <End Role="PROFESOR" EntitySet="PROFESOR" />
             <End Role="EVENTO_RECURRENTE" EntitySet="EVENTO_RECURRENTE" />
           </AssociationSet>
-          <AssociationSet Name="Persona_con_Cel" Association="Self.Persona_con_Cel">
-            <End Role="PERSONA_CEL" EntitySet="PERSONA_CEL" />
-            <End Role="PERSONA" EntitySet="PERSONAs" />
+          <AssociationSet Name="Persona_es_Alumno" Association="Self.Persona_es_Alumno">
+            <End Role="PERSONA" EntitySet="PERSONA" />
+            <End Role="ALUMNO" EntitySet="ALUMNO" />
           </AssociationSet>
-          <AssociationSet Name="Persona_con_Correo" Association="Self.Persona_con_Correo">
-            <End Role="PERSONA_CORREO" EntitySet="PERSONA_CORREO" />
-            <End Role="PERSONA" EntitySet="PERSONAs" />
-          </AssociationSet>
-          <FunctionImport Name="ProfesoresPagInicio" ReturnType="Collection(HorarioModel.ProfesoresPagInicio_Result)" />
+          <FunctionImport Name="ProfesoresPagInicio" ReturnType="Collection(ProyectoFinalBDModel.ProfesoresPagInicio_Result)" />
+          <FunctionImport Name="regresarHorario" ReturnType="Collection(ProyectoFinalBDModel.regresarHorario_Result)">
+            <Parameter Name="Nomina" Mode="In" Type="String" />
+            <Parameter Name="Dia" Mode="In" Type="DateTime" />
+          </FunctionImport>
           <FunctionImport Name="sp_alterdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
@@ -641,11 +607,11 @@
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(HorarioModel.sp_helpdiagramdefinition_Result)">
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ProyectoFinalBDModel.sp_helpdiagramdefinition_Result)">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(HorarioModel.sp_helpdiagrams_Result)">
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ProyectoFinalBDModel.sp_helpdiagrams_Result)">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -664,6 +630,14 @@
           <Property Type="String" Name="Es" Nullable="false" MaxLength="8" />
           <Property Type="String" Name="Ocupado" Nullable="false" MaxLength="2" />
         </ComplexType>
+        <ComplexType Name="regresarHorario_Result">
+          <Property Type="String" Name="Mes" Nullable="true" MaxLength="5" />
+          <Property Type="String" Name="Lunes" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Martes" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Miercoles" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Jueves" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Viernes" Nullable="true" MaxLength="500" />
+        </ComplexType>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -680,27 +654,20 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="HorarioModelStoreContainer" CdmEntityContainer="HorarioEntities">
-          <EntitySetMapping Name="ALUMNOes">
-            <EntityTypeMapping TypeName="HorarioModel.ALUMNO">
-              <MappingFragment StoreEntitySet="ALUMNO">
-                <ScalarProperty Name="Matricula" ColumnName="Matricula" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CarrerasDeDICAs">
-            <EntityTypeMapping TypeName="HorarioModel.CarrerasDeDICA">
+        <EntityContainerMapping StorageEntityContainer="ProyectoFinalBDModelStoreContainer" CdmEntityContainer="HorarioEntities">
+          <EntitySetMapping Name="CarrerasDeDICA">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.CarrerasDeDICA">
               <MappingFragment StoreEntitySet="CarrerasDeDICA">
                 <ScalarProperty Name="Nomina" ColumnName="Nomina" />
                 <ScalarProperty Name="Carrera" ColumnName="Carrera" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CITAs">
-            <EntityTypeMapping TypeName="HorarioModel.CITA">
+          <EntitySetMapping Name="CITA">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.CITA">
               <MappingFragment StoreEntitySet="CITA">
                 <ScalarProperty Name="Folio" ColumnName="Folio" />
-                <ScalarProperty Name="IDVisitante" ColumnName="IDVisitante" />
+                <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
                 <ScalarProperty Name="NominaP" ColumnName="NominaP" />
                 <ScalarProperty Name="Asunto" ColumnName="Asunto" />
                 <ScalarProperty Name="HoraInicio" ColumnName="HoraInicio" />
@@ -709,23 +676,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DiasDeEventoRecurrentes">
-            <EntityTypeMapping TypeName="HorarioModel.DiasDeEventoRecurrente">
+          <EntitySetMapping Name="DiasDeEventoRecurrente">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.DiasDeEventoRecurrente">
               <MappingFragment StoreEntitySet="DiasDeEventoRecurrente">
                 <ScalarProperty Name="IDEvento" ColumnName="IDEvento" />
                 <ScalarProperty Name="Dia" ColumnName="Dia" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DICAs">
-            <EntityTypeMapping TypeName="HorarioModel.DICA">
+          <EntitySetMapping Name="DICA">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.DICA">
               <MappingFragment StoreEntitySet="DICA">
                 <ScalarProperty Name="Nomina" ColumnName="Nomina" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EVENTOes">
-            <EntityTypeMapping TypeName="HorarioModel.EVENTO">
+          <EntitySetMapping Name="EVENTO">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.EVENTO">
               <MappingFragment StoreEntitySet="EVENTO">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
@@ -736,7 +703,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EVENTO_RECURRENTE">
-            <EntityTypeMapping TypeName="HorarioModel.EVENTO_RECURRENTE">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.EVENTO_RECURRENTE">
               <MappingFragment StoreEntitySet="EVENTO_RECURRENTE">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="NominaP" ColumnName="NominaP" />
@@ -748,8 +715,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PERSONAs">
-            <EntityTypeMapping TypeName="HorarioModel.PERSONA">
+          <EntitySetMapping Name="PERSONA">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.PERSONA">
               <MappingFragment StoreEntitySet="PERSONA">
                 <ScalarProperty Name="PrimerNombre" ColumnName="PrimerNombre" />
                 <ScalarProperty Name="Apellido" ColumnName="Apellido" />
@@ -757,24 +724,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PERSONA_CEL">
-            <EntityTypeMapping TypeName="HorarioModel.PERSONA_CEL">
-              <MappingFragment StoreEntitySet="PERSONA_CEL">
-                <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
-                <ScalarProperty Name="Numero" ColumnName="Numero" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PERSONA_CORREO">
-            <EntityTypeMapping TypeName="HorarioModel.PERSONA_CORREO">
-              <MappingFragment StoreEntitySet="PERSONA_CORREO">
-                <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
-                <ScalarProperty Name="Correo" ColumnName="Correo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PROFESORs">
-            <EntityTypeMapping TypeName="HorarioModel.PROFESOR">
+          <EntitySetMapping Name="PROFESOR">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.PROFESOR">
               <MappingFragment StoreEntitySet="PROFESOR">
                 <ScalarProperty Name="Nomina" ColumnName="Nomina" />
                 <ScalarProperty Name="Area" ColumnName="Area" />
@@ -787,7 +738,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="HorarioModel.sysdiagram">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -797,9 +748,33 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="ProfesoresPagInicio" FunctionName="HorarioModel.Store.ProfesoresPagInicio">
+          <EntitySetMapping Name="ALUMNO">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.ALUMNO">
+              <MappingFragment StoreEntitySet="ALUMNO">
+                <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
+                <ScalarProperty Name="Matricula" ColumnName="Matricula" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERSONA_CEL">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.PERSONA_CEL">
+              <MappingFragment StoreEntitySet="PERSONA_CEL">
+                <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERSONA_CORREO">
+            <EntityTypeMapping TypeName="ProyectoFinalBDModel.PERSONA_CORREO">
+              <MappingFragment StoreEntitySet="PERSONA_CORREO">
+                <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ProfesoresPagInicio" FunctionName="ProyectoFinalBDModel.Store.ProfesoresPagInicio">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="HorarioModel.ProfesoresPagInicio_Result">
+              <ComplexTypeMapping TypeName="ProyectoFinalBDModel.ProfesoresPagInicio_Result">
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Apellido" ColumnName="Apellido" />
                 <ScalarProperty Name="Nomina" ColumnName="Nomina" />
@@ -809,20 +784,32 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="HorarioModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="HorarioModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="HorarioModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="HorarioModel.Store.sp_helpdiagramdefinition">
+          <FunctionImportMapping FunctionImportName="regresarHorario" FunctionName="ProyectoFinalBDModel.Store.regresarHorario">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="HorarioModel.sp_helpdiagramdefinition_Result">
+              <ComplexTypeMapping TypeName="ProyectoFinalBDModel.regresarHorario_Result">
+                <ScalarProperty Name="Mes" ColumnName="Mes" />
+                <ScalarProperty Name="Lunes" ColumnName="Lunes" />
+                <ScalarProperty Name="Martes" ColumnName="Martes" />
+                <ScalarProperty Name="Miercoles" ColumnName="Miercoles" />
+                <ScalarProperty Name="Jueves" ColumnName="Jueves" />
+                <ScalarProperty Name="Viernes" ColumnName="Viernes" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="ProyectoFinalBDModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="ProyectoFinalBDModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="ProyectoFinalBDModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="ProyectoFinalBDModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProyectoFinalBDModel.sp_helpdiagramdefinition_Result">
                 <ScalarProperty Name="version" ColumnName="version" />
                 <ScalarProperty Name="definition" ColumnName="definition" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="HorarioModel.Store.sp_helpdiagrams">
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ProyectoFinalBDModel.Store.sp_helpdiagrams">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="HorarioModel.sp_helpdiagrams_Result">
+              <ComplexTypeMapping TypeName="ProyectoFinalBDModel.sp_helpdiagrams_Result">
                 <ScalarProperty Name="Database" ColumnName="Database" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -831,8 +818,8 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="HorarioModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="HorarioModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ProyectoFinalBDModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ProyectoFinalBDModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -847,7 +834,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

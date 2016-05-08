@@ -27,22 +27,35 @@ namespace Horario.Domain.Entities
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ALUMNO> ALUMNOes { get; set; }
-        public virtual DbSet<CarrerasDeDICA> CarrerasDeDICAs { get; set; }
-        public virtual DbSet<CITA> CITAs { get; set; }
-        public virtual DbSet<DiasDeEventoRecurrente> DiasDeEventoRecurrentes { get; set; }
-        public virtual DbSet<DICA> DICAs { get; set; }
-        public virtual DbSet<EVENTO> EVENTOes { get; set; }
+        public virtual DbSet<CarrerasDeDICA> CarrerasDeDICA { get; set; }
+        public virtual DbSet<CITA> CITA { get; set; }
+        public virtual DbSet<DiasDeEventoRecurrente> DiasDeEventoRecurrente { get; set; }
+        public virtual DbSet<DICA> DICA { get; set; }
+        public virtual DbSet<EVENTO> EVENTO { get; set; }
         public virtual DbSet<EVENTO_RECURRENTE> EVENTO_RECURRENTE { get; set; }
-        public virtual DbSet<PERSONA> PERSONAs { get; set; }
+        public virtual DbSet<PERSONA> PERSONA { get; set; }
+        public virtual DbSet<PROFESOR> PROFESOR { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<ALUMNO> ALUMNO { get; set; }
         public virtual DbSet<PERSONA_CEL> PERSONA_CEL { get; set; }
         public virtual DbSet<PERSONA_CORREO> PERSONA_CORREO { get; set; }
-        public virtual DbSet<PROFESOR> PROFESORs { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     
         public virtual ObjectResult<ProfesoresPagInicio_Result> ProfesoresPagInicio()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ProfesoresPagInicio_Result>("ProfesoresPagInicio");
+        }
+    
+        public virtual ObjectResult<regresarHorario_Result> regresarHorario(string nomina, Nullable<System.DateTime> dia)
+        {
+            var nominaParameter = nomina != null ?
+                new ObjectParameter("Nomina", nomina) :
+                new ObjectParameter("Nomina", typeof(string));
+    
+            var diaParameter = dia.HasValue ?
+                new ObjectParameter("Dia", dia) :
+                new ObjectParameter("Dia", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<regresarHorario_Result>("regresarHorario", nominaParameter, diaParameter);
         }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)

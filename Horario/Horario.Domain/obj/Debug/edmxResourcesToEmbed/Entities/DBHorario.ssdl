@@ -1,10 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="HorarioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="ProyectoFinalBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ProyectoFinalBD.dbo.ALUMNO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="ALUMNO">
     <Key>
+      <PropertyRef Name="IDPersona" />
       <PropertyRef Name="Matricula" />
     </Key>
-    <Property Name="Matricula" Type="int" Nullable="false" />
+    <Property Name="IDPersona" Type="int" Nullable="false" />
+    <Property Name="Matricula" Type="nchar" MaxLength="10" Nullable="false" />
   </EntityType>
   <EntityType Name="CarrerasDeDICA">
     <Key>
@@ -17,11 +21,9 @@
   <EntityType Name="CITA">
     <Key>
       <PropertyRef Name="Folio" />
-      <PropertyRef Name="IDVisitante" />
-      <PropertyRef Name="NominaP" />
     </Key>
     <Property Name="Folio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="IDVisitante" Type="int" Nullable="false" />
+    <Property Name="IDPersona" Type="int" Nullable="false" />
     <Property Name="NominaP" Type="char" MaxLength="10" Nullable="false" />
     <Property Name="Asunto" Type="nchar" MaxLength="250" Nullable="false" />
     <Property Name="HoraInicio" Type="time" Precision="7" Nullable="false" />
@@ -72,16 +74,22 @@
     <Property Name="Apellido" Type="nchar" MaxLength="250" Nullable="false" />
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CEL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="PERSONA_CEL">
     <Key>
       <PropertyRef Name="IDPersona" />
+      <PropertyRef Name="Numero" />
     </Key>
     <Property Name="IDPersona" Type="int" Nullable="false" />
     <Property Name="Numero" Type="char" MaxLength="10" Nullable="false" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="PERSONA_CORREO">
     <Key>
       <PropertyRef Name="IDPersona" />
+      <PropertyRef Name="Correo" />
     </Key>
     <Property Name="IDPersona" Type="int" Nullable="false" />
     <Property Name="Correo" Type="nchar" MaxLength="250" Nullable="false" />
@@ -108,18 +116,6 @@
     <Property Name="version" Type="int" />
     <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
-  <Association Name="Alumno crea Cita">
-    <End Role="ALUMNO" Type="Self.ALUMNO" Multiplicity="1" />
-    <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ALUMNO">
-        <PropertyRef Name="Matricula" />
-      </Principal>
-      <Dependent Role="CITA">
-        <PropertyRef Name="IDVisitante" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="DICA tiene Carreras">
     <End Role="DICA" Type="Self.DICA" Multiplicity="1" />
     <End Role="CarrerasDeDICA" Type="Self.CarrerasDeDICA" Multiplicity="*" />
@@ -156,31 +152,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="Persona con Cel">
-    <End Role="PERSONA_CEL" Type="Self.PERSONA_CEL" Multiplicity="1" />
-    <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="PERSONA_CEL">
-        <PropertyRef Name="IDPersona" />
-      </Principal>
-      <Dependent Role="PERSONA">
-        <PropertyRef Name="ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="Persona con Correo">
-    <End Role="PERSONA_CORREO" Type="Self.PERSONA_CORREO" Multiplicity="1" />
-    <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="PERSONA_CORREO">
-        <PropertyRef Name="IDPersona" />
-      </Principal>
-      <Dependent Role="PERSONA">
-        <PropertyRef Name="ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="Persona tiene Cita ">
+  <Association Name="Persona crea Cita">
     <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
     <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
     <ReferentialConstraint>
@@ -188,7 +160,19 @@
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="CITA">
-        <PropertyRef Name="IDVisitante" />
+        <PropertyRef Name="IDPersona" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Persona es Alumno">
+    <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
+    <End Role="ALUMNO" Type="Self.ALUMNO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERSONA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ALUMNO">
+        <PropertyRef Name="IDPersona" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -230,6 +214,10 @@
   </Association>
   <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
   <Function Name="ProfesoresPagInicio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="regresarHorario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Nomina" Type="char" Mode="In" />
+    <Parameter Name="Dia" Type="datetime" Mode="In" />
+  </Function>
   <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
     <Parameter Name="owner_id" Type="int" Mode="In" />
@@ -260,8 +248,7 @@
     <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-  <EntityContainer Name="HorarioModelStoreContainer">
-    <EntitySet Name="ALUMNO" EntityType="Self.ALUMNO" Schema="dbo" store:Type="Tables" />
+  <EntityContainer Name="ProyectoFinalBDModelStoreContainer">
     <EntitySet Name="CarrerasDeDICA" EntityType="Self.CarrerasDeDICA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CITA" EntityType="Self.CITA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DiasDeEventoRecurrente" EntityType="Self.DiasDeEventoRecurrente" Schema="dbo" store:Type="Tables" />
@@ -269,14 +256,26 @@
     <EntitySet Name="EVENTO" EntityType="Self.EVENTO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="EVENTO_RECURRENTE" EntityType="Self.EVENTO_RECURRENTE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PERSONA" EntityType="Self.PERSONA" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="PERSONA_CEL" EntityType="Self.PERSONA_CEL" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="PERSONA_CORREO" EntityType="Self.PERSONA_CORREO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PROFESOR" EntityType="Self.PROFESOR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="Alumno crea Cita" Association="Self.Alumno crea Cita">
-      <End Role="ALUMNO" EntitySet="ALUMNO" />
-      <End Role="CITA" EntitySet="CITA" />
-    </AssociationSet>
+    <EntitySet Name="ALUMNO" EntityType="Self.ALUMNO" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ALUMNO].[IDPersona] AS [IDPersona], 
+    [ALUMNO].[Matricula] AS [Matricula]
+    FROM [dbo].[ALUMNO] AS [ALUMNO]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="PERSONA_CEL" EntityType="Self.PERSONA_CEL" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [PERSONA_CEL].[IDPersona] AS [IDPersona], 
+    [PERSONA_CEL].[Numero] AS [Numero]
+    FROM [dbo].[PERSONA_CEL] AS [PERSONA_CEL]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="PERSONA_CORREO" EntityType="Self.PERSONA_CORREO" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [PERSONA_CORREO].[IDPersona] AS [IDPersona], 
+    [PERSONA_CORREO].[Correo] AS [Correo]
+    FROM [dbo].[PERSONA_CORREO] AS [PERSONA_CORREO]</DefiningQuery>
+    </EntitySet>
     <AssociationSet Name="DICA tiene Carreras" Association="Self.DICA tiene Carreras">
       <End Role="DICA" EntitySet="DICA" />
       <End Role="CarrerasDeDICA" EntitySet="CarrerasDeDICA" />
@@ -289,17 +288,13 @@
       <End Role="EVENTO_RECURRENTE" EntitySet="EVENTO_RECURRENTE" />
       <End Role="DiasDeEventoRecurrente" EntitySet="DiasDeEventoRecurrente" />
     </AssociationSet>
-    <AssociationSet Name="Persona con Cel" Association="Self.Persona con Cel">
-      <End Role="PERSONA_CEL" EntitySet="PERSONA_CEL" />
-      <End Role="PERSONA" EntitySet="PERSONA" />
-    </AssociationSet>
-    <AssociationSet Name="Persona con Correo" Association="Self.Persona con Correo">
-      <End Role="PERSONA_CORREO" EntitySet="PERSONA_CORREO" />
-      <End Role="PERSONA" EntitySet="PERSONA" />
-    </AssociationSet>
-    <AssociationSet Name="Persona tiene Cita " Association="Self.Persona tiene Cita ">
+    <AssociationSet Name="Persona crea Cita" Association="Self.Persona crea Cita">
       <End Role="PERSONA" EntitySet="PERSONA" />
       <End Role="CITA" EntitySet="CITA" />
+    </AssociationSet>
+    <AssociationSet Name="Persona es Alumno" Association="Self.Persona es Alumno">
+      <End Role="PERSONA" EntitySet="PERSONA" />
+      <End Role="ALUMNO" EntitySet="ALUMNO" />
     </AssociationSet>
     <AssociationSet Name="Profesor atiende Cita" Association="Self.Profesor atiende Cita">
       <End Role="PROFESOR" EntitySet="PROFESOR" />

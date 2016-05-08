@@ -15,12 +15,12 @@ namespace Horario.Domain.Concrete
 
         public IEnumerable<PROFESOR> Profesores
         {
-            get { return context.PROFESORs; }
+            get { return context.PROFESOR; }
         }
 
         public void SaveProfesor(PROFESOR profesor) // si le da RC-> Go to Definition (F12) puede ver la definición de la clase
         {
-            PROFESOR dbEntry = context.PROFESORs.Find(profesor.Nomina);
+            PROFESOR dbEntry = context.PROFESOR.Find(profesor.Nomina);
 
             if (dbEntry != null) //Si encontró al profesor, actualiza los datos
             {
@@ -34,17 +34,17 @@ namespace Horario.Domain.Concrete
             }
             else //de lo contrario, lo añade
             {
-                context.PROFESORs.Add(profesor);
+                context.PROFESOR.Add(profesor);
             }
             context.SaveChanges();
         }
 
         public PROFESOR DeleteProfesor(string nomina)
         {
-            PROFESOR dbEntry = context.PROFESORs.Find(nomina);
+            PROFESOR dbEntry = context.PROFESOR.Find(nomina);
             if (dbEntry != null)
             {
-                context.PROFESORs.Remove(dbEntry);
+                context.PROFESOR.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;

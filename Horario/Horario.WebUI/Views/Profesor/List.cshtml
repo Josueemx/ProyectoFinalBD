@@ -1,17 +1,17 @@
 ﻿@model  Horario.Domain.Concrete.EFProfesorRepository
 
 @{
-    ViewBag.Title = "Profesores";
+    ViewBag.Title = "Profesores disponibles";
 }
 
 @foreach (var prof in Model.Profesores)
 {
     <div>
-        <h3>@prof.Nomina</h3>
-        @prof.Nombre
-        @prof.Apellido
+        <h3>@prof.Nombre @prof.Apellido</h3>
+        @prof.Nomina
         <br />
         @prof.Area
+        @Html.ActionLink("Ver horario", "Horario", new { Nomina = @prof.Nomina})
     </div>
 }
 

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Horario.Domain.Entities.regresarHorario_Result>
+
+@{
+    ViewBag.Title = "Horario";
+}
+
+<table class="table">
+    <tr>
+        <th>@DateTime.Now.Month.ToString()</th>
+        <th>Lunes</th>
+        <th>Martes</th>
+        <th>Miercoles</th>
+        <th>Jueves</th>
+        <th>Viernes</th>
+    </tr>
+    @foreach (var renglon in Model)
+    {
+        <tr>
+            <th>@renglon.Mes</th>
+            <th>@renglon.Lunes</th>
+            <th>@renglon.Martes</th>
+            <th>@renglon.Miercoles</th>
+            <th>@renglon.Jueves</th>
+            <th>@renglon.Viernes</th>
+        </tr>
+    }
+</table>
+
+
+
