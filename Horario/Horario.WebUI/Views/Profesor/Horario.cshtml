@@ -1,30 +1,42 @@
-﻿@model IEnumerable<Horario.Domain.Entities.regresarHorario_Result>
+﻿@model  Horario.Domain.Concrete.HorarioViewModel
 
 @{
     ViewBag.Title = "Horario";
 }
 
-<table class="table">
-    <tr>
-        <th>@DateTime.Now.Month.ToString()</th>
-        <th>Lunes</th>
-        <th>Martes</th>
-        <th>Miercoles</th>
-        <th>Jueves</th>
-        <th>Viernes</th>
-    </tr>
-    @foreach (var renglon in Model)
-    {
-        <tr>
-            <th>@renglon.Mes</th>
-            <th>@renglon.Lunes</th>
-            <th>@renglon.Martes</th>
-            <th>@renglon.Miercoles</th>
-            <th>@renglon.Jueves</th>
-            <th>@renglon.Viernes</th>
-        </tr>
-    }
-</table>
+<h1>Horario de @Model.Profe.Nombre @Model.Profe.Apellido</h1>
+<br />
+@Html.ActionLink("Regresar a Profesores", "List")
+<br />
+@Html.ActionLink("Semana anterior", "Horario", new { Nomina = @Model.Profe.Nomina, DiaTexto = Model.regresarDiaMenos7() })
+<br />
+@Html.ActionLink("Semana siguiente", "Horario", new { Nomina = @Model.Profe.Nomina, DiaTexto = Model.regresarDiaMas7() })
 
+<div class="row">
+    <div class="col-lg-6">
+        <table class="table">
+            <tr>
+                @foreach (var Encabezado in Model.regresarEncabezadosSemana())
+                {
+                    <th>@Encabezado.Encabezados</th>
+                }
+            </tr>
+            @foreach (var renglon in Model.regresarHorario())
+            {
+                <tr>
+                    <th>@renglon.Mes</th>
+                    <th>@renglon.Lunes</th>
+                    <th>@renglon.Martes</th>
+                    <th>@renglon.Miercoles</th>
+                    <th>@renglon.Jueves</th>
+                    <th>@renglon.Viernes</th>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-lg-6">
+        
+    </div>
+</div>
 
 

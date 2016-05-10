@@ -11,7 +11,8 @@
         @prof.Nomina
         <br />
         @prof.Area
-        @Html.ActionLink("Ver horario", "Horario", new { Nomina = @prof.Nomina})
+        <br />
+        @Html.ActionLink("Ver horario", "Horario", new { Nomina = @prof.Nomina, DiaTexto = DateTime.Now.ToString("yyyy-MM-dd")})
     </div>
 }
 

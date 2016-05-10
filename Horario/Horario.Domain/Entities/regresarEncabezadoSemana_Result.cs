@@ -10,18 +10,9 @@
 namespace Horario.Domain.Entities
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class CITA
+    public partial class regresarEncabezadoSemana_Result
     {
-        public int Folio { get; set; }
-        public string NombrePersona { get; set; }
-        public string NominaP { get; set; }
-        public string Asunto { get; set; }
-        public System.TimeSpan HoraInicio { get; set; }
-        public System.TimeSpan HoraFin { get; set; }
-        public System.DateTime Fecha { get; set; }
-    
-        public virtual PROFESOR PROFESOR { get; set; }
+        public string Encabezados { get; set; }
     }
 }

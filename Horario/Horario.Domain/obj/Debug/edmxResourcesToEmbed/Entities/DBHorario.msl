@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="ProyectoFinalBDModelStoreContainer" CdmEntityContainer="HorarioEntities">
+  <EntityContainerMapping StorageEntityContainer="HorarioModelStoreContainer" CdmEntityContainer="HorarioEntities">
     <EntitySetMapping Name="CarrerasDeDICA">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.CarrerasDeDICA">
+      <EntityTypeMapping TypeName="HorarioModel.CarrerasDeDICA">
         <MappingFragment StoreEntitySet="CarrerasDeDICA">
           <ScalarProperty Name="Nomina" ColumnName="Nomina" />
           <ScalarProperty Name="Carrera" ColumnName="Carrera" />
@@ -10,10 +10,10 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="CITA">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.CITA">
+      <EntityTypeMapping TypeName="HorarioModel.CITA">
         <MappingFragment StoreEntitySet="CITA">
           <ScalarProperty Name="Folio" ColumnName="Folio" />
-          <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
+          <ScalarProperty Name="NombrePersona" ColumnName="NombrePersona" />
           <ScalarProperty Name="NominaP" ColumnName="NominaP" />
           <ScalarProperty Name="Asunto" ColumnName="Asunto" />
           <ScalarProperty Name="HoraInicio" ColumnName="HoraInicio" />
@@ -23,7 +23,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="DiasDeEventoRecurrente">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.DiasDeEventoRecurrente">
+      <EntityTypeMapping TypeName="HorarioModel.DiasDeEventoRecurrente">
         <MappingFragment StoreEntitySet="DiasDeEventoRecurrente">
           <ScalarProperty Name="IDEvento" ColumnName="IDEvento" />
           <ScalarProperty Name="Dia" ColumnName="Dia" />
@@ -31,14 +31,14 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="DICA">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.DICA">
+      <EntityTypeMapping TypeName="HorarioModel.DICA">
         <MappingFragment StoreEntitySet="DICA">
           <ScalarProperty Name="Nomina" ColumnName="Nomina" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="EVENTO">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.EVENTO">
+      <EntityTypeMapping TypeName="HorarioModel.EVENTO">
         <MappingFragment StoreEntitySet="EVENTO">
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="Nombre" ColumnName="Nombre" />
@@ -49,7 +49,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="EVENTO_RECURRENTE">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.EVENTO_RECURRENTE">
+      <EntityTypeMapping TypeName="HorarioModel.EVENTO_RECURRENTE">
         <MappingFragment StoreEntitySet="EVENTO_RECURRENTE">
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="NominaP" ColumnName="NominaP" />
@@ -62,7 +62,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="PERSONA">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.PERSONA">
+      <EntityTypeMapping TypeName="HorarioModel.PERSONA">
         <MappingFragment StoreEntitySet="PERSONA">
           <ScalarProperty Name="PrimerNombre" ColumnName="PrimerNombre" />
           <ScalarProperty Name="Apellido" ColumnName="Apellido" />
@@ -71,7 +71,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="PROFESOR">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.PROFESOR">
+      <EntityTypeMapping TypeName="HorarioModel.PROFESOR">
         <MappingFragment StoreEntitySet="PROFESOR">
           <ScalarProperty Name="Nomina" ColumnName="Nomina" />
           <ScalarProperty Name="Area" ColumnName="Area" />
@@ -84,7 +84,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.sysdiagrams">
+      <EntityTypeMapping TypeName="HorarioModel.sysdiagrams">
         <MappingFragment StoreEntitySet="sysdiagrams">
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -95,7 +95,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ALUMNO">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.ALUMNO">
+      <EntityTypeMapping TypeName="HorarioModel.ALUMNO">
         <MappingFragment StoreEntitySet="ALUMNO">
           <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
           <ScalarProperty Name="Matricula" ColumnName="Matricula" />
@@ -103,7 +103,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="PERSONA_CEL">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.PERSONA_CEL">
+      <EntityTypeMapping TypeName="HorarioModel.PERSONA_CEL">
         <MappingFragment StoreEntitySet="PERSONA_CEL">
           <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
           <ScalarProperty Name="Numero" ColumnName="Numero" />
@@ -111,16 +111,17 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="PERSONA_CORREO">
-      <EntityTypeMapping TypeName="ProyectoFinalBDModel.PERSONA_CORREO">
+      <EntityTypeMapping TypeName="HorarioModel.PERSONA_CORREO">
         <MappingFragment StoreEntitySet="PERSONA_CORREO">
           <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
           <ScalarProperty Name="Correo" ColumnName="Correo" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="ProfesoresPagInicio" FunctionName="ProyectoFinalBDModel.Store.ProfesoresPagInicio">
+    <FunctionImportMapping FunctionImportName="esCitaValida" FunctionName="HorarioModel.Store.esCitaValida" />
+    <FunctionImportMapping FunctionImportName="ProfesoresPagInicio" FunctionName="HorarioModel.Store.ProfesoresPagInicio">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="ProyectoFinalBDModel.ProfesoresPagInicio_Result">
+        <ComplexTypeMapping TypeName="HorarioModel.ProfesoresPagInicio_Result">
           <ScalarProperty Name="Nombre" ColumnName="Nombre" />
           <ScalarProperty Name="Apellido" ColumnName="Apellido" />
           <ScalarProperty Name="Nomina" ColumnName="Nomina" />
@@ -130,9 +131,16 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="regresarHorario" FunctionName="ProyectoFinalBDModel.Store.regresarHorario">
+    <FunctionImportMapping FunctionImportName="regresarEncabezadoSemana" FunctionName="HorarioModel.Store.regresarEncabezadoSemana">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="ProyectoFinalBDModel.regresarHorario_Result">
+        <ComplexTypeMapping TypeName="HorarioModel.regresarEncabezadoSemana_Result">
+          <ScalarProperty Name="Encabezados" ColumnName="Encabezados" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="regresarHorario" FunctionName="HorarioModel.Store.regresarHorario">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="HorarioModel.regresarHorario_Result">
           <ScalarProperty Name="Mes" ColumnName="Mes" />
           <ScalarProperty Name="Lunes" ColumnName="Lunes" />
           <ScalarProperty Name="Martes" ColumnName="Martes" />
@@ -142,20 +150,20 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="ProyectoFinalBDModel.Store.sp_alterdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="ProyectoFinalBDModel.Store.sp_creatediagram" />
-    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="ProyectoFinalBDModel.Store.sp_dropdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="ProyectoFinalBDModel.Store.sp_helpdiagramdefinition">
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="HorarioModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="HorarioModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="HorarioModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="HorarioModel.Store.sp_helpdiagramdefinition">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="ProyectoFinalBDModel.sp_helpdiagramdefinition_Result">
+        <ComplexTypeMapping TypeName="HorarioModel.sp_helpdiagramdefinition_Result">
           <ScalarProperty Name="version" ColumnName="version" />
           <ScalarProperty Name="definition" ColumnName="definition" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ProyectoFinalBDModel.Store.sp_helpdiagrams">
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="HorarioModel.Store.sp_helpdiagrams">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="ProyectoFinalBDModel.sp_helpdiagrams_Result">
+        <ComplexTypeMapping TypeName="HorarioModel.sp_helpdiagrams_Result">
           <ScalarProperty Name="Database" ColumnName="Database" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -164,7 +172,7 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ProyectoFinalBDModel.Store.sp_renamediagram" />
-    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ProyectoFinalBDModel.Store.sp_upgraddiagrams" />
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="HorarioModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="HorarioModel.Store.sp_upgraddiagrams" />
   </EntityContainerMapping>
 </Mapping>

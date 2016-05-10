@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Abstract\IProfesorRepository.cs" />
     <Compile Include="Concrete\EFProfesorRepository.cs" />
+    <Compile Include="Concrete\HorarioViewModel.cs" />
     <Compile Include="Entities\ALUMNO.cs">
       <DependentUpon>DBHorario.tt</DependentUpon>
     </Compile>
@@ -130,6 +131,9 @@
       <DependentUpon>DBHorario.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ProfesoresPagInicio_Result.cs">
+      <DependentUpon>DBHorario.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\regresarEncabezadoSemana_Result.cs">
       <DependentUpon>DBHorario.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\regresarHorario_Result.cs">

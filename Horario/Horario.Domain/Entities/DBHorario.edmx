@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ProyectoFinalBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="HorarioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'ProyectoFinalBD.dbo.ALUMNO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ALUMNO">
@@ -28,7 +28,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.ALUMNO' does not have a primar
             <PropertyRef Name="Folio" />
           </Key>
           <Property Name="Folio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDPersona" Type="int" Nullable="false" />
+          <Property Name="NombrePersona" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="NominaP" Type="char" MaxLength="10" Nullable="false" />
           <Property Name="Asunto" Type="nchar" MaxLength="250" Nullable="false" />
           <Property Name="HoraInicio" Type="time" Precision="7" Nullable="false" />
@@ -157,18 +157,6 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Persona crea Cita">
-          <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
-          <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PERSONA">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="CITA">
-              <PropertyRef Name="IDPersona" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Persona es Alumno">
           <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
           <End Role="ALUMNO" Type="Self.ALUMNO" Multiplicity="*" />
@@ -217,8 +205,17 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="esCitaValida" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NominaP" Type="char" Mode="In" />
+          <Parameter Name="DiaCTexto" Type="nchar" Mode="In" />
+          <Parameter Name="HoraICTexto" Type="nchar" Mode="In" />
+          <Parameter Name="HoraFCTexto" Type="nchar" Mode="In" />
+        </Function>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="ProfesoresPagInicio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="regresarEncabezadoSemana" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Dia" Type="datetime" Mode="In" />
+        </Function>
         <Function Name="regresarHorario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Nomina" Type="char" Mode="In" />
           <Parameter Name="Dia" Type="datetime" Mode="In" />
@@ -253,7 +250,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
           <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <EntityContainer Name="ProyectoFinalBDModelStoreContainer">
+        <EntityContainer Name="HorarioModelStoreContainer">
           <EntitySet Name="CarrerasDeDICA" EntityType="Self.CarrerasDeDICA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CITA" EntityType="Self.CITA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DiasDeEventoRecurrente" EntityType="Self.DiasDeEventoRecurrente" Schema="dbo" store:Type="Tables" />
@@ -293,10 +290,6 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             <End Role="EVENTO_RECURRENTE" EntitySet="EVENTO_RECURRENTE" />
             <End Role="DiasDeEventoRecurrente" EntitySet="DiasDeEventoRecurrente" />
           </AssociationSet>
-          <AssociationSet Name="Persona crea Cita" Association="Self.Persona crea Cita">
-            <End Role="PERSONA" EntitySet="PERSONA" />
-            <End Role="CITA" EntitySet="CITA" />
-          </AssociationSet>
           <AssociationSet Name="Persona es Alumno" Association="Self.Persona es Alumno">
             <End Role="PERSONA" EntitySet="PERSONA" />
             <End Role="ALUMNO" EntitySet="ALUMNO" />
@@ -318,7 +311,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ProyectoFinalBDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="HorarioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="CarrerasDeDICA">
           <Key>
             <PropertyRef Name="Nomina" />
@@ -333,13 +326,12 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             <PropertyRef Name="Folio" />
           </Key>
           <Property Name="Folio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDPersona" Type="Int32" Nullable="false" />
+          <Property Name="NombrePersona" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="NominaP" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="Asunto" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="HoraInicio" Type="Time" Nullable="false" Precision="7" />
           <Property Name="HoraFin" Type="Time" Nullable="false" Precision="7" />
           <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="PERSONA" Relationship="Self.Persona_crea_Cita" FromRole="CITA" ToRole="PERSONA" />
           <NavigationProperty Name="PROFESOR" Relationship="Self.Profesor_atiende_Cita" FromRole="CITA" ToRole="PROFESOR" />
         </EntityType>
         <EntityType Name="DiasDeEventoRecurrente">
@@ -391,7 +383,6 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
           <Property Name="PrimerNombre" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Apellido" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="CITA" Relationship="Self.Persona_crea_Cita" FromRole="PERSONA" ToRole="CITA" />
           <NavigationProperty Name="ALUMNO" Relationship="Self.Persona_es_Alumno" FromRole="PERSONA" ToRole="ALUMNO" />
         </EntityType>
         <EntityType Name="PROFESOR">
@@ -454,18 +445,6 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </Principal>
             <Dependent Role="CarrerasDeDICA">
               <PropertyRef Name="Nomina" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Persona_crea_Cita">
-          <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
-          <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PERSONA">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="CITA">
-              <PropertyRef Name="IDPersona" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -558,10 +537,6 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             <End Role="DICA" EntitySet="DICA" />
             <End Role="CarrerasDeDICA" EntitySet="CarrerasDeDICA" />
           </AssociationSet>
-          <AssociationSet Name="Persona_crea_Cita" Association="Self.Persona_crea_Cita">
-            <End Role="PERSONA" EntitySet="PERSONA" />
-            <End Role="CITA" EntitySet="CITA" />
-          </AssociationSet>
           <AssociationSet Name="Profesor_atiende_Cita" Association="Self.Profesor_atiende_Cita">
             <End Role="PROFESOR" EntitySet="PROFESOR" />
             <End Role="CITA" EntitySet="CITA" />
@@ -586,8 +561,17 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             <End Role="PERSONA" EntitySet="PERSONA" />
             <End Role="ALUMNO" EntitySet="ALUMNO" />
           </AssociationSet>
-          <FunctionImport Name="ProfesoresPagInicio" ReturnType="Collection(ProyectoFinalBDModel.ProfesoresPagInicio_Result)" />
-          <FunctionImport Name="regresarHorario" ReturnType="Collection(ProyectoFinalBDModel.regresarHorario_Result)">
+          <FunctionImport Name="esCitaValida" ReturnType="Collection(Boolean)">
+            <Parameter Name="NominaP" Mode="In" Type="String" />
+            <Parameter Name="DiaCTexto" Mode="In" Type="String" />
+            <Parameter Name="HoraICTexto" Mode="In" Type="String" />
+            <Parameter Name="HoraFCTexto" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ProfesoresPagInicio" ReturnType="Collection(HorarioModel.ProfesoresPagInicio_Result)" />
+          <FunctionImport Name="regresarEncabezadoSemana" ReturnType="Collection(HorarioModel.regresarEncabezadoSemana_Result)">
+            <Parameter Name="Dia" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="regresarHorario" ReturnType="Collection(HorarioModel.regresarHorario_Result)">
             <Parameter Name="Nomina" Mode="In" Type="String" />
             <Parameter Name="Dia" Mode="In" Type="DateTime" />
           </FunctionImport>
@@ -607,11 +591,11 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ProyectoFinalBDModel.sp_helpdiagramdefinition_Result)">
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(HorarioModel.sp_helpdiagramdefinition_Result)">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ProyectoFinalBDModel.sp_helpdiagrams_Result)">
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(HorarioModel.sp_helpdiagrams_Result)">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -649,14 +633,17 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <ComplexType Name="regresarEncabezadoSemana_Result">
+          <Property Type="String" Name="Encabezados" Nullable="true" MaxLength="40" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ProyectoFinalBDModelStoreContainer" CdmEntityContainer="HorarioEntities">
+        <EntityContainerMapping StorageEntityContainer="HorarioModelStoreContainer" CdmEntityContainer="HorarioEntities">
           <EntitySetMapping Name="CarrerasDeDICA">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.CarrerasDeDICA">
+            <EntityTypeMapping TypeName="HorarioModel.CarrerasDeDICA">
               <MappingFragment StoreEntitySet="CarrerasDeDICA">
                 <ScalarProperty Name="Nomina" ColumnName="Nomina" />
                 <ScalarProperty Name="Carrera" ColumnName="Carrera" />
@@ -664,10 +651,10 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CITA">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.CITA">
+            <EntityTypeMapping TypeName="HorarioModel.CITA">
               <MappingFragment StoreEntitySet="CITA">
                 <ScalarProperty Name="Folio" ColumnName="Folio" />
-                <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
+                <ScalarProperty Name="NombrePersona" ColumnName="NombrePersona" />
                 <ScalarProperty Name="NominaP" ColumnName="NominaP" />
                 <ScalarProperty Name="Asunto" ColumnName="Asunto" />
                 <ScalarProperty Name="HoraInicio" ColumnName="HoraInicio" />
@@ -677,7 +664,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DiasDeEventoRecurrente">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.DiasDeEventoRecurrente">
+            <EntityTypeMapping TypeName="HorarioModel.DiasDeEventoRecurrente">
               <MappingFragment StoreEntitySet="DiasDeEventoRecurrente">
                 <ScalarProperty Name="IDEvento" ColumnName="IDEvento" />
                 <ScalarProperty Name="Dia" ColumnName="Dia" />
@@ -685,14 +672,14 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DICA">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.DICA">
+            <EntityTypeMapping TypeName="HorarioModel.DICA">
               <MappingFragment StoreEntitySet="DICA">
                 <ScalarProperty Name="Nomina" ColumnName="Nomina" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EVENTO">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.EVENTO">
+            <EntityTypeMapping TypeName="HorarioModel.EVENTO">
               <MappingFragment StoreEntitySet="EVENTO">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
@@ -703,7 +690,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EVENTO_RECURRENTE">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.EVENTO_RECURRENTE">
+            <EntityTypeMapping TypeName="HorarioModel.EVENTO_RECURRENTE">
               <MappingFragment StoreEntitySet="EVENTO_RECURRENTE">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="NominaP" ColumnName="NominaP" />
@@ -716,7 +703,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PERSONA">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.PERSONA">
+            <EntityTypeMapping TypeName="HorarioModel.PERSONA">
               <MappingFragment StoreEntitySet="PERSONA">
                 <ScalarProperty Name="PrimerNombre" ColumnName="PrimerNombre" />
                 <ScalarProperty Name="Apellido" ColumnName="Apellido" />
@@ -725,7 +712,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PROFESOR">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.PROFESOR">
+            <EntityTypeMapping TypeName="HorarioModel.PROFESOR">
               <MappingFragment StoreEntitySet="PROFESOR">
                 <ScalarProperty Name="Nomina" ColumnName="Nomina" />
                 <ScalarProperty Name="Area" ColumnName="Area" />
@@ -738,7 +725,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.sysdiagrams">
+            <EntityTypeMapping TypeName="HorarioModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -749,7 +736,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ALUMNO">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.ALUMNO">
+            <EntityTypeMapping TypeName="HorarioModel.ALUMNO">
               <MappingFragment StoreEntitySet="ALUMNO">
                 <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
                 <ScalarProperty Name="Matricula" ColumnName="Matricula" />
@@ -757,7 +744,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PERSONA_CEL">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.PERSONA_CEL">
+            <EntityTypeMapping TypeName="HorarioModel.PERSONA_CEL">
               <MappingFragment StoreEntitySet="PERSONA_CEL">
                 <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
                 <ScalarProperty Name="Numero" ColumnName="Numero" />
@@ -765,16 +752,17 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PERSONA_CORREO">
-            <EntityTypeMapping TypeName="ProyectoFinalBDModel.PERSONA_CORREO">
+            <EntityTypeMapping TypeName="HorarioModel.PERSONA_CORREO">
               <MappingFragment StoreEntitySet="PERSONA_CORREO">
                 <ScalarProperty Name="IDPersona" ColumnName="IDPersona" />
                 <ScalarProperty Name="Correo" ColumnName="Correo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="ProfesoresPagInicio" FunctionName="ProyectoFinalBDModel.Store.ProfesoresPagInicio">
+          <FunctionImportMapping FunctionImportName="esCitaValida" FunctionName="HorarioModel.Store.esCitaValida" />
+          <FunctionImportMapping FunctionImportName="ProfesoresPagInicio" FunctionName="HorarioModel.Store.ProfesoresPagInicio">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ProyectoFinalBDModel.ProfesoresPagInicio_Result">
+              <ComplexTypeMapping TypeName="HorarioModel.ProfesoresPagInicio_Result">
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Apellido" ColumnName="Apellido" />
                 <ScalarProperty Name="Nomina" ColumnName="Nomina" />
@@ -784,9 +772,16 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="regresarHorario" FunctionName="ProyectoFinalBDModel.Store.regresarHorario">
+          <FunctionImportMapping FunctionImportName="regresarEncabezadoSemana" FunctionName="HorarioModel.Store.regresarEncabezadoSemana" >
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ProyectoFinalBDModel.regresarHorario_Result">
+              <ComplexTypeMapping TypeName="HorarioModel.regresarEncabezadoSemana_Result">
+                <ScalarProperty Name="Encabezados" ColumnName="Encabezados" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="regresarHorario" FunctionName="HorarioModel.Store.regresarHorario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HorarioModel.regresarHorario_Result">
                 <ScalarProperty Name="Mes" ColumnName="Mes" />
                 <ScalarProperty Name="Lunes" ColumnName="Lunes" />
                 <ScalarProperty Name="Martes" ColumnName="Martes" />
@@ -796,20 +791,20 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="ProyectoFinalBDModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="ProyectoFinalBDModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="ProyectoFinalBDModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="ProyectoFinalBDModel.Store.sp_helpdiagramdefinition">
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="HorarioModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="HorarioModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="HorarioModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="HorarioModel.Store.sp_helpdiagramdefinition">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ProyectoFinalBDModel.sp_helpdiagramdefinition_Result">
+              <ComplexTypeMapping TypeName="HorarioModel.sp_helpdiagramdefinition_Result">
                 <ScalarProperty Name="version" ColumnName="version" />
                 <ScalarProperty Name="definition" ColumnName="definition" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ProyectoFinalBDModel.Store.sp_helpdiagrams">
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="HorarioModel.Store.sp_helpdiagrams">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ProyectoFinalBDModel.sp_helpdiagrams_Result">
+              <ComplexTypeMapping TypeName="HorarioModel.sp_helpdiagrams_Result">
                 <ScalarProperty Name="Database" ColumnName="Database" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -818,8 +813,8 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ProyectoFinalBDModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ProyectoFinalBDModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="HorarioModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="HorarioModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="ProyectoFinalBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="HorarioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <!--Errors Found During Generation:
 warning 6002: The table/view 'ProyectoFinalBD.dbo.ALUMNO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="ALUMNO">
@@ -23,7 +23,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.ALUMNO' does not have a primar
       <PropertyRef Name="Folio" />
     </Key>
     <Property Name="Folio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="IDPersona" Type="int" Nullable="false" />
+    <Property Name="NombrePersona" Type="nvarchar" MaxLength="250" Nullable="false" />
     <Property Name="NominaP" Type="char" MaxLength="10" Nullable="false" />
     <Property Name="Asunto" Type="nchar" MaxLength="250" Nullable="false" />
     <Property Name="HoraInicio" Type="time" Precision="7" Nullable="false" />
@@ -152,18 +152,6 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="Persona crea Cita">
-    <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
-    <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PERSONA">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="CITA">
-        <PropertyRef Name="IDPersona" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="Persona es Alumno">
     <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
     <End Role="ALUMNO" Type="Self.ALUMNO" Multiplicity="*" />
@@ -212,8 +200,17 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="esCitaValida" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="NominaP" Type="char" Mode="In" />
+    <Parameter Name="DiaCTexto" Type="nchar" Mode="In" />
+    <Parameter Name="HoraICTexto" Type="nchar" Mode="In" />
+    <Parameter Name="HoraFCTexto" Type="nchar" Mode="In" />
+  </Function>
   <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
   <Function Name="ProfesoresPagInicio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="regresarEncabezadoSemana" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Dia" Type="datetime" Mode="In" />
+  </Function>
   <Function Name="regresarHorario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Nomina" Type="char" Mode="In" />
     <Parameter Name="Dia" Type="datetime" Mode="In" />
@@ -248,7 +245,7 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
     <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-  <EntityContainer Name="ProyectoFinalBDModelStoreContainer">
+  <EntityContainer Name="HorarioModelStoreContainer">
     <EntitySet Name="CarrerasDeDICA" EntityType="Self.CarrerasDeDICA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CITA" EntityType="Self.CITA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DiasDeEventoRecurrente" EntityType="Self.DiasDeEventoRecurrente" Schema="dbo" store:Type="Tables" />
@@ -287,10 +284,6 @@ warning 6002: The table/view 'ProyectoFinalBD.dbo.PERSONA_CORREO' does not have 
     <AssociationSet Name="Evento Recurrente tiene Dias" Association="Self.Evento Recurrente tiene Dias">
       <End Role="EVENTO_RECURRENTE" EntitySet="EVENTO_RECURRENTE" />
       <End Role="DiasDeEventoRecurrente" EntitySet="DiasDeEventoRecurrente" />
-    </AssociationSet>
-    <AssociationSet Name="Persona crea Cita" Association="Self.Persona crea Cita">
-      <End Role="PERSONA" EntitySet="PERSONA" />
-      <End Role="CITA" EntitySet="CITA" />
     </AssociationSet>
     <AssociationSet Name="Persona es Alumno" Association="Self.Persona es Alumno">
       <End Role="PERSONA" EntitySet="PERSONA" />

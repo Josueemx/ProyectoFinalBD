@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="ProyectoFinalBDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+<Schema Namespace="HorarioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityType Name="CarrerasDeDICA">
     <Key>
       <PropertyRef Name="Nomina" />
@@ -14,13 +14,12 @@
       <PropertyRef Name="Folio" />
     </Key>
     <Property Name="Folio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="IDPersona" Type="Int32" Nullable="false" />
+    <Property Name="NombrePersona" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="NominaP" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
     <Property Name="Asunto" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="HoraInicio" Type="Time" Nullable="false" Precision="7" />
     <Property Name="HoraFin" Type="Time" Nullable="false" Precision="7" />
     <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="0" />
-    <NavigationProperty Name="PERSONA" Relationship="Self.Persona_crea_Cita" FromRole="CITA" ToRole="PERSONA" />
     <NavigationProperty Name="PROFESOR" Relationship="Self.Profesor_atiende_Cita" FromRole="CITA" ToRole="PROFESOR" />
   </EntityType>
   <EntityType Name="DiasDeEventoRecurrente">
@@ -72,7 +71,6 @@
     <Property Name="PrimerNombre" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="Apellido" Type="String" MaxLength="250" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <NavigationProperty Name="CITA" Relationship="Self.Persona_crea_Cita" FromRole="PERSONA" ToRole="CITA" />
     <NavigationProperty Name="ALUMNO" Relationship="Self.Persona_es_Alumno" FromRole="PERSONA" ToRole="ALUMNO" />
   </EntityType>
   <EntityType Name="PROFESOR">
@@ -135,18 +133,6 @@
       </Principal>
       <Dependent Role="CarrerasDeDICA">
         <PropertyRef Name="Nomina" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="Persona_crea_Cita">
-    <End Role="PERSONA" Type="Self.PERSONA" Multiplicity="1" />
-    <End Role="CITA" Type="Self.CITA" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PERSONA">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="CITA">
-        <PropertyRef Name="IDPersona" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -239,10 +225,6 @@
       <End Role="DICA" EntitySet="DICA" />
       <End Role="CarrerasDeDICA" EntitySet="CarrerasDeDICA" />
     </AssociationSet>
-    <AssociationSet Name="Persona_crea_Cita" Association="Self.Persona_crea_Cita">
-      <End Role="PERSONA" EntitySet="PERSONA" />
-      <End Role="CITA" EntitySet="CITA" />
-    </AssociationSet>
     <AssociationSet Name="Profesor_atiende_Cita" Association="Self.Profesor_atiende_Cita">
       <End Role="PROFESOR" EntitySet="PROFESOR" />
       <End Role="CITA" EntitySet="CITA" />
@@ -267,8 +249,17 @@
       <End Role="PERSONA" EntitySet="PERSONA" />
       <End Role="ALUMNO" EntitySet="ALUMNO" />
     </AssociationSet>
-    <FunctionImport Name="ProfesoresPagInicio" ReturnType="Collection(ProyectoFinalBDModel.ProfesoresPagInicio_Result)" />
-    <FunctionImport Name="regresarHorario" ReturnType="Collection(ProyectoFinalBDModel.regresarHorario_Result)">
+    <FunctionImport Name="esCitaValida" ReturnType="Collection(Boolean)">
+      <Parameter Name="NominaP" Mode="In" Type="String" />
+      <Parameter Name="DiaCTexto" Mode="In" Type="String" />
+      <Parameter Name="HoraICTexto" Mode="In" Type="String" />
+      <Parameter Name="HoraFCTexto" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="ProfesoresPagInicio" ReturnType="Collection(HorarioModel.ProfesoresPagInicio_Result)" />
+    <FunctionImport Name="regresarEncabezadoSemana" ReturnType="Collection(HorarioModel.regresarEncabezadoSemana_Result)">
+      <Parameter Name="Dia" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="regresarHorario" ReturnType="Collection(HorarioModel.regresarHorario_Result)">
       <Parameter Name="Nomina" Mode="In" Type="String" />
       <Parameter Name="Dia" Mode="In" Type="DateTime" />
     </FunctionImport>
@@ -288,11 +279,11 @@
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ProyectoFinalBDModel.sp_helpdiagramdefinition_Result)">
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(HorarioModel.sp_helpdiagramdefinition_Result)">
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ProyectoFinalBDModel.sp_helpdiagrams_Result)">
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(HorarioModel.sp_helpdiagrams_Result)">
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
@@ -329,5 +320,8 @@
     <Property Type="Int32" Name="ID" Nullable="false" />
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="regresarEncabezadoSemana_Result">
+    <Property Type="String" Name="Encabezados" Nullable="true" MaxLength="40" />
   </ComplexType>
 </Schema>

@@ -17,7 +17,6 @@ namespace Horario.Domain.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PERSONA()
         {
-            this.CITA = new HashSet<CITA>();
             this.ALUMNO = new HashSet<ALUMNO>();
         }
     
@@ -25,8 +24,6 @@ namespace Horario.Domain.Entities
         public string Apellido { get; set; }
         public int ID { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CITA> CITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALUMNO> ALUMNO { get; set; }
     }
