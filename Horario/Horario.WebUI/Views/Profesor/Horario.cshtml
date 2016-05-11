@@ -45,9 +45,9 @@
                     <div class="panel-body">
                         <p>Tu nombre:@Html.TextBox("NombrePersona", null, new { @class = "form-control" })</p>
                         <p>Asunto:@Html.TextBox("Asunto", null, new { @class = "form-control" })</p>
-                        <p>Día:@Html.TextBox("Fecha", null, new { @class = "form-control" })</p>
-                        <p>De:@Html.TextBox("HoraInicio", null, new { @class = "form-control" })</p>
-                        <p>A:@Html.TextBox("HoraFin", null, new { @class = "form-control" })</p>
+                        <p>Día:@Html.TextBox("Fecha", null, new { @class = "form-control", @pattern= "(2016)[-]((1|0)[0-2]|[0][0-9])[-]((1|0|2)[0-9]|[3][0-1])" })</p>
+                        <p>De:@Html.TextBox("HoraInicio", null, new { @class = "form-control", @pattern= "[0-2][0-9][:](0|3)[0][:][0][0]" })</p>
+                        <p>A:@Html.TextBox("HoraFin", null, new { @class = "form-control", @pattern = "[0-2][0-9][:](0|3)[0][:][0][0]" })</p>
 </div>
                     <div class="panel-footer">
                         <input type="submit" value="Crear" />

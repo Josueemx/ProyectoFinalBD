@@ -58,7 +58,7 @@ namespace Horario.WebUI.Controllers
         }
 
         [HttpPost]
-        public RedirectResult crearCita(string NominaProfeC, string NombrePersona, string Asunto, string Fecha, string HoraInicio, string HoraFin)
+        public ActionResult crearCita(string NominaProfeC, string NombrePersona, string Asunto, string Fecha, string HoraInicio, string HoraFin)
         {
 
             try
@@ -93,37 +93,39 @@ namespace Horario.WebUI.Controllers
 
                         context.CITA.Add(Cita);
                         context.SaveChanges();
-                    return Redirect("Se genero cita");
-                        //TempData["message"] = string.Format();
+
+                        TempData["message"] = "Tu cita se creó correctamente.";
+                        return RedirectToAction("List");
+                        //return RedirectToAction("List", "Profesor", ViewBag);
+                        //return View(repository);
+                        //return View("List", repository);
 
                     }
                     else
                     {
-                        return Redirect("http://www.google.com");
+                        TempData["message"] = "Lo sentimos, no se pudo crear tu cita. Asegurate de haber escrito bien los datos, de no haber puesto una fecha u hora que ya pasó, de que la fecha no sea Sábado o Domingo o que no intefiera con otra cita.";
+                        return RedirectToAction("List");
+                        //return RedirectToAction("List", "Profesor", null);
+                        //return RedirectToAction("List", "Profesor", ViewBag);
+                        //return View("List", repository);
                     }
-
-                    //return RedirectToAction("List", "Profesor", null);
 
                 }
             }
             catch (Exception error)
             {
-                return Redirect(error.Message);
+                TempData["message"] = string.Format("Lo sentimos, ha habido un error al crear la cita: "+error.Message);
+                return RedirectToAction("List");
+                //return RedirectToAction("List", "Profesor", null);
+                //return RedirectToAction("List", "Profesor", ViewBag);
+                //return View("List", repository);
             }
-
-            return Redirect("http://www.facebook.com");
-
         }
 
         public ViewResult List()
         {
+            //ViewBag.message = "";
             return View(repository);
         }
-        /*
-        public ViewResult Inicio()
-        {
-            return View(repository.Inicio);
-        }*/
-
     }
 }
