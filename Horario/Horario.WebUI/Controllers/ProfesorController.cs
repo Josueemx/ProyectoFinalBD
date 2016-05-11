@@ -7,6 +7,9 @@ using Horario.Domain.Abstract;
 using Horario.Domain.Entities;
 using Horario.Domain.Concrete;
 using System.Globalization;
+using System.Data.Entity.Core.Objects;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Horario.WebUI.Controllers
 {
@@ -52,6 +55,64 @@ namespace Horario.WebUI.Controllers
 
             //return View(context.regresarHorario(Nomina, diadia));
             return View(Cosa);
+        }
+
+        [HttpPost]
+        public RedirectResult crearCita(string NominaProfeC, string NombrePersona, string Asunto, string Fecha, string HoraInicio, string HoraFin)
+        {
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection("data source=JOSUE;initial catalog=ProyectoFinalBD;integrated security=True;multipleactiveresultsets=True;application name=EntityFramework;"))
+                {
+                    SqlCommand command = new SqlCommand("esCitaValida", conn);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add("@DiaCTexto", SqlDbType.NVarChar).Value = Fecha;
+                    command.Parameters.Add("@HoraFCTexto", SqlDbType.NVarChar).Value = HoraFin;
+                    command.Parameters.Add("@HoraICTexto", SqlDbType.NVarChar).Value = HoraInicio;
+                    command.Parameters.Add("@NominaP", SqlDbType.NVarChar).Value = NominaProfeC;
+
+                    command.Parameters.Add("@CitaCorrecta", SqlDbType.Bit).Direction = ParameterDirection.ReturnValue;
+                    conn.Open();
+
+                    command.ExecuteNonQuery();
+
+                    int esCitaValida = int.Parse(command.Parameters["@CitaCorrecta"].Value.ToString());
+
+                    if (esCitaValida==1)
+                    {
+                        CITA Cita = new CITA();
+                        CultureInfo provider = CultureInfo.InvariantCulture;
+
+                        Cita.Asunto = Asunto;
+                        Cita.Fecha = DateTime.ParseExact(Fecha, "yyyy-MM-dd", provider);
+                        Cita.HoraInicio = TimeSpan.ParseExact(HoraInicio, "g", provider);
+                        Cita.HoraFin = TimeSpan.ParseExact(HoraFin, "g", provider);
+                        Cita.NombrePersona = NombrePersona;
+                        Cita.NominaP = NominaProfeC;
+
+                        context.CITA.Add(Cita);
+                        context.SaveChanges();
+                    return Redirect("Se genero cita");
+                        //TempData["message"] = string.Format();
+
+                    }
+                    else
+                    {
+                        return Redirect("http://www.google.com");
+                    }
+
+                    //return RedirectToAction("List", "Profesor", null);
+
+                }
+            }
+            catch (Exception error)
+            {
+                return Redirect(error.Message);
+            }
+
+            return Redirect("http://www.facebook.com");
+
         }
 
         public ViewResult List()

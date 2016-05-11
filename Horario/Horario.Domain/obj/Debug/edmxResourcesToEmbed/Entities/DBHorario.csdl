@@ -249,7 +249,7 @@
       <End Role="PERSONA" EntitySet="PERSONA" />
       <End Role="ALUMNO" EntitySet="ALUMNO" />
     </AssociationSet>
-    <FunctionImport Name="esCitaValida" ReturnType="Collection(Boolean)">
+    <FunctionImport Name="esCitaValida">
       <Parameter Name="NominaP" Mode="In" Type="String" />
       <Parameter Name="DiaCTexto" Mode="In" Type="String" />
       <Parameter Name="HoraICTexto" Mode="In" Type="String" />

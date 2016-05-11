@@ -35,8 +35,39 @@
         </table>
     </div>
     <div class="col-lg-6">
+        <center><button onclick="Mostrar()" style="position: fixed;" id="Mas" class="btn">Generar cita con @Model.Profe.Nombre</button></center>
+       
+        <div id="Completo" style="position: fixed; display:none;">
+            @using (Html.BeginForm("crearCita", "Profesor", new { NominaProfeC = Model.Profe.Nomina }, FormMethod.Post, null))
+            {
+                <center>
+                    <center><h4>Nueva cita con @Model.Profe.Nombre</h4></center>
+                    <div class="panel-body">
+                        <p>Tu nombre:@Html.TextBox("NombrePersona", null, new { @class = "form-control" })</p>
+                        <p>Asunto:@Html.TextBox("Asunto", null, new { @class = "form-control" })</p>
+                        <p>Día:@Html.TextBox("Fecha", null, new { @class = "form-control" })</p>
+                        <p>De:@Html.TextBox("HoraInicio", null, new { @class = "form-control" })</p>
+                        <p>A:@Html.TextBox("HoraFin", null, new { @class = "form-control" })</p>
+</div>
+                    <div class="panel-footer">
+                        <input type="submit" value="Crear" />
+                    </div>
+                </center>
+            }
+        </div>
         
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script type="text/javascript">
+            function Mostrar(){
+                $("#Mas").toggle(function(){
+                    $("#Completo").show();
+                    //add property fixed
+                    $(this).hide();
+                });
+            }
+</script>
 
 

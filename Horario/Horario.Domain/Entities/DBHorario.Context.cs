@@ -40,7 +40,7 @@ namespace Horario.Domain.Entities
         public virtual DbSet<PERSONA_CEL> PERSONA_CEL { get; set; }
         public virtual DbSet<PERSONA_CORREO> PERSONA_CORREO { get; set; }
     
-        public virtual ObjectResult<Nullable<bool>> esCitaValida(string nominaP, string diaCTexto, string horaICTexto, string horaFCTexto)
+        public virtual int esCitaValida(string nominaP, string diaCTexto, string horaICTexto, string horaFCTexto)
         {
             var nominaPParameter = nominaP != null ?
                 new ObjectParameter("NominaP", nominaP) :
@@ -58,7 +58,7 @@ namespace Horario.Domain.Entities
                 new ObjectParameter("HoraFCTexto", horaFCTexto) :
                 new ObjectParameter("HoraFCTexto", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<bool>>("esCitaValida", nominaPParameter, diaCTextoParameter, horaICTextoParameter, horaFCTextoParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("esCitaValida", nominaPParameter, diaCTextoParameter, horaICTextoParameter, horaFCTextoParameter);
         }
     
         public virtual ObjectResult<ProfesoresPagInicio_Result> ProfesoresPagInicio()

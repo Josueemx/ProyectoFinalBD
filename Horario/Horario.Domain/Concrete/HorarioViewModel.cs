@@ -15,6 +15,12 @@ namespace Horario.Domain.Concrete
         public DateTime Dia { get; set; }
         public DateTime DiaMas7 { get; set; }
         public DateTime DiaMenos7 { get; set; }
+        public string FechaC { get; set; }
+        public string HoraIC { get; set; }
+        public string HoraFC { get; set; }
+        public string NombrePersonaC { get; set; }
+        public string NominaProfeC { get; set; }
+        public string AsuntoC { get; set; }
 
         public HorarioViewModel(PROFESOR Profe, DateTime Dia, DateTime DiaMas7, DateTime DiaMenos7)
         {
