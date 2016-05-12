@@ -58,7 +58,7 @@ namespace Horario.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult crearCita(string NominaProfeC, string NombrePersona, string Asunto, string Fecha, string HoraInicio, string HoraFin)
+        public RedirectResult crearCita(string NominaProfeC, string NombrePersona, string Asunto, string Fecha, string HoraInicio, string HoraFin)
         {
 
             try
@@ -94,8 +94,9 @@ namespace Horario.WebUI.Controllers
                         context.CITA.Add(Cita);
                         context.SaveChanges();
 
-                        TempData["message"] = "Tu cita se creó correctamente.";
-                        return RedirectToAction("List");
+                        //TempData["message"] = "Tu cita se creó correctamente.";
+                        //return RedirectToAction("List");
+                        return Redirect("https://www.facebook.com/");
                         //return RedirectToAction("List", "Profesor", ViewBag);
                         //return View(repository);
                         //return View("List", repository);
@@ -103,8 +104,9 @@ namespace Horario.WebUI.Controllers
                     }
                     else
                     {
-                        TempData["message"] = "Lo sentimos, no se pudo crear tu cita. Asegurate de haber escrito bien los datos, de no haber puesto una fecha u hora que ya pasó, de que la fecha no sea Sábado o Domingo o que no intefiera con otra cita.";
-                        return RedirectToAction("List");
+                        //TempData["message"] = "Lo sentimos, no se pudo crear tu cita. Asegurate de haber escrito bien los datos, de no haber puesto una fecha u hora que ya pasó, de que la fecha no sea Sábado o Domingo o que no intefiera con otra cita.";
+                        //return RedirectToAction("List");
+                        return Redirect("https://www.google.com.mx");
                         //return RedirectToAction("List", "Profesor", null);
                         //return RedirectToAction("List", "Profesor", ViewBag);
                         //return View("List", repository);
@@ -114,8 +116,9 @@ namespace Horario.WebUI.Controllers
             }
             catch (Exception error)
             {
-                TempData["message"] = string.Format("Lo sentimos, ha habido un error al crear la cita: "+error.Message);
-                return RedirectToAction("List");
+                //TempData["message"] = string.Format("Lo sentimos, ha habido un error al crear la cita: "+error.Message);
+                //return RedirectToAction("List");
+                return Redirect("https://www.myspace.com");
                 //return RedirectToAction("List", "Profesor", null);
                 //return RedirectToAction("List", "Profesor", ViewBag);
                 //return View("List", repository);
